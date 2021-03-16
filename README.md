@@ -21,11 +21,23 @@ House Price Prediction web application
 
 ### Servicii:
 	-> UserController
-		->lista anunturi favorite
+		-> GetAllUsers
+		-> GetUser{id}
+		-> Post Create/RegisterUser
+		-> Post Login
+		-> Put UpdateUser
+		-> DeleteUser
+		-> Get favorite_post
 	-> PostController
-		->
+		-> GetAllPosts
+		-> GetPost{}
+		-> Post Create
+		-> Put UpdatePost{id}
+		-> DeletePost{id}
 	-> PricePredictionController
 		->
 ### Baza de date:
-	-> Users: id, username, password, name, email,
-	-> Posts: id, isLocal, id_user, ... 
+	-> Users: id, username, password, name, email, telefon, fav_post_id[]
+	-> Favorite_posts: id, id_user, id_post
+	-> Posts: id, isLocal, id_user, price, surface, bedrooms, bathroom, type, condition, partitioning, year, floor
+	-> Posts_imgs: id, id_post, path
