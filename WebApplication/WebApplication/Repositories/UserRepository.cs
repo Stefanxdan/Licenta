@@ -2,10 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication.Data;
-using WebApplication.Models;
+using WebApplication.Entities;
 
-namespace WebApplication.Repositories.Imp
+namespace WebApplication.Repositories
 {
+    public interface IUserRepository : IRepository<User>
+    {
+        User GetByUsernameAndPassword(string username, string password);
+    }
+
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
@@ -28,7 +33,7 @@ namespace WebApplication.Repositories.Imp
 
         public User GetByUsernameAndPassword(string username, string password)
         {
-            return _context.Users.FirstOrDefault(u => u.UserName == username && u.Password == password);
+            return _context.Users.SingleOrDefault(u => u.Username == username && u.Password == password);
         }
     }
 }

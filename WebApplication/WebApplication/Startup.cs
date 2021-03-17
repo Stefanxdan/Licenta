@@ -6,10 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WebApplication.Data;
+using WebApplication.Helpers;
 using WebApplication.Repositories;
-using WebApplication.Repositories.Imp;
 using WebApplication.Services;
-using WebApplication.Services.Imp;
 
 namespace WebApplication
 {
@@ -29,6 +28,10 @@ namespace WebApplication
                 options.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=HPPdb;Trusted_Connection=True");
             });
 
+            // configure strongly typed settings object
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            // configure DI for application services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
 

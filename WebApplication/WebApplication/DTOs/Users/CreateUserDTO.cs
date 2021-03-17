@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace WebApplication.DTOs
+namespace WebApplication.DTOs.Users
 {
-    public class CreateUserDTO
+    public class CreateUser
     {
         public String UserName { get; set; }
         public String Password { get; set; }

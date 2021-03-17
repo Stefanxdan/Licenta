@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using WebApplication.Models;
+using WebApplication.Entities;
 
 namespace WebApplication.Repositories
 {

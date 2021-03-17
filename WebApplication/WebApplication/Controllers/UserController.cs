@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using WebApplication.DTOs;
-using WebApplication.Models;
+using WebApplication.DTOs.Users;
+using WebApplication.Entities;
 using WebApplication.Services;
 
 namespace WebApplication.Controllers
@@ -20,33 +20,44 @@ namespace WebApplication.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            return Ok(_userService.GetAllUsers());
+            return Ok(_userService.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetUserById(Guid id)
         {
-            var result = _userService.GetUserById(id);
+            var result = _userService.GetById(id);
             if (result == null)
                 return NotFound();
             return Ok(result);
         }
 
-        [HttpPost]
-        public IActionResult CreateUser([FromBody] CreateUserDTO user)
+        [HttpPost("register")]
+        public IActionResult CreateUser([FromBody] CreateUser user)
         {
             var s = new User
             {
-                UserName = user.UserName,
+                Username = user.UserName,
                 Password = user.Password,
                 Name = user.Name,
                 Email = user.Email
             };
-            var result = _userService.AddUser(s);
+            var result = _userService.Add(s);
             if (result == null)
                 return BadRequest();
             return Created($"/users/{result.Id}", result);
         }
 
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticateRequest model)
+        {
+            var response = _userService.Authenticate(model);
+
+            if (response == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(response);
+        }
     }
 }
