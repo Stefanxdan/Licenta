@@ -17,6 +17,7 @@ House Price Prediction web application
 		-pagina price prediction
 		-set de date: crawler pe api everyday
 		-comparare pret postare cu predictia
+		-cele mai cautate zone, dupa numarul de accesari
 		-harta zone de pret -> pt un apartament hardcodat comparat pretul in mai multe zone
 
 ### Servicii:
