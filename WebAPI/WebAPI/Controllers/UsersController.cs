@@ -4,6 +4,7 @@ using WebAPI.Services;
 using WebAPI.Models;
 using WebAPI.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
@@ -21,29 +22,29 @@ namespace WebAPI.Controllers
 
         [HttpPost("authenticate")]
         [AllowAnonymous]
-        public IActionResult Authenticate(AuthenticationRequest request)
+        public async Task<IActionResult> Authenticate(AuthenticationRequest request)
         {
-            var user = _userService.Authenticate(request.Username, request.Password);
+            var user = await _userService.Authenticate(request.Username, request.Password);
             return user == null ? NotFound() : Ok(user);
 
         }
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            var users = _userService.GetAllUsers();
+            var users = await _userService.GetAllUsers();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetUserById(Guid id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             var currentUserId = Guid.Parse(User.Identity.Name);
             if (id != currentUserId && !User.IsInRole(Role.Admin))
             {
                 return Forbid();
             }
-            var user = _userService.GetUserById(id);
+            var user = await _userService.GetUserById(id);
             if (user == null)
                 return NotFound();
             return Ok(user);
@@ -51,10 +52,10 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult CreateUser(RegisterModel user)
+        public async Task<IActionResult> CreateUserAsync(RegisterModel user)
         {
-            var user_created = _userService.AddUser(user);
-            return user_created == null ? BadRequest() : Ok(user_created);
+            var user_created = await _userService.AddUser(user);
+            return user_created == null ? BadRequest("Username or email taken.") : Ok(user_created);
         }
     }
 }

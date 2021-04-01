@@ -1,11 +1,14 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using WebAPI.Entities;
+using WebAPI.Helpers;
 using WebAPI.Models;
 using WebAPI.Repositories;
 
@@ -13,35 +16,40 @@ namespace WebAPI.Services
 {
     public interface IUserService
     {
-        User GetUserById(Guid id);
-        IEnumerable<User> GetAllUsers();
-        User AddUser(RegisterModel request);
-        AuthenticationResponse Authenticate(string username, string password);
+        Task<User> GetUserById(Guid id);
+        Task<IEnumerable<User>> GetAllUsers();
+        Task<User> AddUser(RegisterModel request);
+        Task<AuthenticationResponse> Authenticate(string username, string password);
     }
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly AppSettings _appSettings;
 
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository repository, IOptions<AppSettings> appSettings)
         {
             _repository = repository;
+            _appSettings = appSettings.Value;
         }
 
-        public User AddUser(RegisterModel request)
+        public async Task<User> AddUser(RegisterModel request)
         {
+            var response = await _repository.CheckUsernameAndEmail(request.Username, request.Email);
+            if (response == null)
+                return null;
             var user = new User(request.Username, request.Email, request.FirstName, request.LastName, request.Password, Role.User, request.PhoneNumber);
-            return _repository.Add(user);
+            return await _repository.Add(user);
         }
 
-        public AuthenticationResponse Authenticate(string username, string password)
+        public async Task<AuthenticationResponse> Authenticate(string username, string password)
         {
-            var user = _repository.GetAll().Where(u => u.Username == username && u.Password == password).FirstOrDefault();
+            var user = await _repository.GetByUsernameAndPassword(username, password);
             if (user == null)
             {
                 return null;
             }
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("ciubi si vasluineii 2");
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -64,14 +72,14 @@ namespace WebAPI.Services
             };
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
-        public User GetUserById(Guid id)
+        public async Task<User> GetUserById(Guid id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
         }
     }
 }
