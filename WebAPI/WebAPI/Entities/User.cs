@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace WebAPI.Entities
@@ -10,6 +11,7 @@ namespace WebAPI.Entities
         }
 
         public string Username { get;  set; }
+        [EmailAddress]
         public string Email { get;  set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

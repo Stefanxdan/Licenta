@@ -44,6 +44,7 @@ namespace WebAPI.Controllers
             return userCreated == null ? BadRequest("Username or email taken.") : Ok(userCreated);
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllUsers()
