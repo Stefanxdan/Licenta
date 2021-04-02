@@ -5,6 +5,9 @@ using WebAPI.Models;
 using WebAPI.Entities;
 using System;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using WebAPI.Models.Users;
 
 namespace WebAPI.Controllers
 {
@@ -14,6 +17,7 @@ namespace WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        //private readonly IMapper _mapper;
 
         public UsersController(IUserService userService)
         {
@@ -22,24 +26,47 @@ namespace WebAPI.Controllers
 
         [HttpPost("authenticate")]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Authenticate(AuthenticationRequest request)
         {
-            var user = await _userService.Authenticate(request.Username, request.Password);
-            return user == null ? NotFound() : Ok(user);
-
+            var authResponse = await _userService.Authenticate(request.Username, request.Password);
+            return authResponse == null ? NotFound() : Ok(authResponse);
+        }
+        
+        [HttpPost]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateUser(RegisterModel user)
+        {
+            var userCreated = await _userService.AddUser(user);
+            return userCreated == null ? BadRequest("Username or email taken.") : Ok(userCreated);
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsers();
             return Ok(users);
         }
-
+        
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<IActionResult> GetUserById(Guid id)
         {
-            var currentUserId = Guid.Parse(User.Identity?.Name ?? string.Empty);
+            var currentUser = User.Identity?.Name ?? string.Empty;
+            if (currentUser == string.Empty)
+            {
+                return BadRequest("You are not logged in");
+            }
+                
+            var currentUserId = Guid.Parse(currentUser);
             if (id != currentUserId && !User.IsInRole(Role.Admin))
             {
                 return Forbid();
@@ -49,13 +76,59 @@ namespace WebAPI.Controllers
                 return NotFound();
             return Ok(user);
         }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> CreateUserAsync(RegisterModel user)
+        
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateModel request)
         {
-            var userCreated = await _userService.AddUser(user);
-            return userCreated == null ? BadRequest("Username or email taken.") : Ok(userCreated);
+            var currentUser = User.Identity?.Name ?? string.Empty;
+            if (currentUser == string.Empty)
+            {
+                return BadRequest("You are not logged in");
+            }
+                
+            var currentUserId = Guid.Parse(currentUser);
+            if (id != currentUserId && !User.IsInRole(Role.Admin))
+            {
+                return Forbid();
+            }
+
+            var response = await _userService.UpdateUser(id, request);
+            if (!response)
+            {
+                return NotFound(id);
+            }
+
+            return NoContent();
+        }
+        
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var currentUser = User.Identity?.Name ?? string.Empty;
+            if (currentUser == string.Empty)
+            {
+                return BadRequest("You are not logged in");
+            }
+                
+            var currentUserId = Guid.Parse(currentUser);
+            if (id != currentUserId && !User.IsInRole(Role.Admin))
+            {
+                return Forbid();
+            }
+            var response = await _userService.DeleteUser(id);
+            if (!response)
+            {
+                return NotFound(id);
+            }
+
+            return NoContent();
         }
     }
 }

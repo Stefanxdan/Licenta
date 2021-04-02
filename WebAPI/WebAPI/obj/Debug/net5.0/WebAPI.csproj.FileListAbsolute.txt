@@ -59,3 +59,5 @@ D:\Facultate\Licenta\WebAPI\WebAPI\obj\Debug\net5.0\ref\WebAPI.dll
 D:\Facultate\Licenta\WebAPI\WebAPI\obj\Debug\net5.0\WebAPI.pdb
 D:\Facultate\Licenta\WebAPI\WebAPI\obj\Debug\net5.0\WebAPI.genruntimeconfig.cache
 D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\AutoMapper.dll
+D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

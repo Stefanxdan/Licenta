@@ -11,5 +11,7 @@ namespace WebAPI.Repositories
         Task<T> GetById(Guid id);
         Task<IEnumerable<T>> GetAll();
         Task<T> Add(T entity);
+        Task<bool> Remove(Guid id);
+        Task<bool> Update(Guid id, T entity);
     }
 }

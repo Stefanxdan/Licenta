@@ -30,6 +30,37 @@ namespace WebAPI.Repositories
             return entity;
         }
 
+        public async Task<bool> Remove(Guid id)
+        {
+            var user = await GetById(id);
+            if (user == null)
+            {
+                return false;
+            }
+            _dataContext.Remove(user);
+            await _dataContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> Update(Guid id, User updatedUser)
+        {
+            var user = await GetById(id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.FirstName = updatedUser.FirstName;
+            user.LastName = updatedUser.LastName;
+            user.PhoneNumber = updatedUser.PhoneNumber;
+            user.Password = user.Password;
+
+            _dataContext.Update(user);
+            await _dataContext.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<IEnumerable<User>> GetAll()
         {
             return await _dataContext.Users.ToListAsync();
@@ -42,7 +73,7 @@ namespace WebAPI.Repositories
 
         public async Task<User> CheckUsernameAndEmail(string username, string email)
         {
-            return await _dataContext.Users.Where(u => u.Username == username && u.Email == email).FirstOrDefaultAsync();
+            return await _dataContext.Users.Where(u => u.Username == username || u.Email == email).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetByUsernameAndPassword(string username, string password)

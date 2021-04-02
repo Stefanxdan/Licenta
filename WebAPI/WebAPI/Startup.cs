@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Text;
 using WebAPI.Data;
 using WebAPI.Helpers;
@@ -29,7 +28,9 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-
+            services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
+            
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -54,15 +55,13 @@ namespace WebAPI
                     ValidateAudience = false
                 };
             });
-
-
+            
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(@"Data Source=.\SQLEXPRESS;database=WebApiDb;Trusted_Connection=True");
             });
 
-            services.AddControllers();
-
+            // configure DI 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
 
@@ -70,6 +69,8 @@ namespace WebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
             });
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

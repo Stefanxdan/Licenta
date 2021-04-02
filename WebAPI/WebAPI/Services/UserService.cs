@@ -6,9 +6,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using WebAPI.Entities;
 using WebAPI.Helpers;
-using WebAPI.Models;
+using WebAPI.Models.Users;
 using WebAPI.Repositories;
 
 namespace WebAPI.Services
@@ -18,26 +19,44 @@ namespace WebAPI.Services
         Task<User> GetUserById(Guid id);
         Task<IEnumerable<User>> GetAllUsers();
         Task<User> AddUser(RegisterModel request);
+        Task<bool> DeleteUser(Guid id);
+        Task<bool> UpdateUser(Guid id, UpdateModel request);
         Task<AuthenticationResponse> Authenticate(string username, string password);
     }
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
         private readonly AppSettings _appSettings;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IOptions<AppSettings> appSettings)
+        public UserService(IUserRepository repository, IOptions<AppSettings> appSettings, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
             _appSettings = appSettings.Value;
         }
 
         public async Task<User> AddUser(RegisterModel request)
         {
             var response = await _repository.CheckUsernameAndEmail(request.Username, request.Email);
-            if (response == null)
+            if (response != null)
                 return null;
-            var user = new User(request.Username, request.Email, request.FirstName, request.LastName, request.Password, Role.User, request.PhoneNumber);
+            var user = _mapper.Map<User>(request);
+            user.Role = Role.User;
+            //var user = new User(request.Username, request.Email, request.FirstName, request.LastName, request.Password, Role.User, request.PhoneNumber);
             return await _repository.Add(user);
+        }
+
+        public async Task<bool> DeleteUser(Guid id)
+        {
+            var status = await _repository.Remove(id);
+            return status;        
+        }
+
+        public async Task<bool> UpdateUser(Guid id, UpdateModel request)
+        {
+            var status = await _repository.Update(id, _mapper.Map<User>(request));
+            return status;
         }
 
         public async Task<AuthenticationResponse> Authenticate(string username, string password)
@@ -60,15 +79,10 @@ namespace WebAPI.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return new AuthenticationResponse
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Username = user.Username,
-                Role = user.Role,
-                Token = tokenHandler.WriteToken(token)
-            };
+
+            var response = _mapper.Map<AuthenticationResponse>(user);
+            response.Token = tokenHandler.WriteToken(token);
+            return response;
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
