@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
-            var currentUserId = Guid.Parse(User.Identity.Name);
+            var currentUserId = Guid.Parse(User.Identity?.Name ?? string.Empty);
             if (id != currentUserId && !User.IsInRole(Role.Admin))
             {
                 return Forbid();
@@ -54,8 +54,8 @@ namespace WebAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> CreateUserAsync(RegisterModel user)
         {
-            var user_created = await _userService.AddUser(user);
-            return user_created == null ? BadRequest("Username or email taken.") : Ok(user_created);
+            var userCreated = await _userService.AddUser(user);
+            return userCreated == null ? BadRequest("Username or email taken.") : Ok(userCreated);
         }
     }
 }
