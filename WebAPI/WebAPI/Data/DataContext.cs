@@ -8,6 +8,7 @@ namespace WebAPI.Data
     {
         private readonly ILoggerFactory _loggerFactory = LoggerFactory.Create(config => config.AddConsole());
         public DbSet<User> Users { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DataContext(DbContextOptions options) : base(options)
         {
         }
@@ -25,6 +26,15 @@ namespace WebAPI.Data
                 .IsUnique();
             builder.Entity<User>().HasIndex(u => u.Email)
                 .IsUnique();
+            
+            
+            
+            builder.Entity<Post>()
+                .HasOne(p => p.User)
+                .WithMany(b => b.Posts)
+                .HasForeignKey(p => p.IdUser)
+                .HasConstraintName("ForeignKey_Post_User")
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

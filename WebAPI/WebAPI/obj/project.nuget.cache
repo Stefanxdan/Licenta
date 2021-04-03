@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "sBZMGBB9T0GDJY2IHmYUwEnnwiLOuJidO8QUtOXHFmofQb2dv2c0VTZmPhCLQ4barpt067RvkAYZx0xcX4HQ/g==",
+  "dgSpecHash": "mkhUjFopj73Vg/3+AGhV9Qis1C0c05AcnJ2M1YkrA3o/aVHntpt/8Ks2IC8fRHDIidXvSnzV4ElHbeay0j0fRg==",
   "success": true,
   "projectFilePath": "D:\\Facultate\\Licenta\\WebAPI\\WebAPI\\WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\stefa\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
+    "C:\\Users\\stefa\\.nuget\\packages\\fluentvalidation\\10.0.0-preview4\\fluentvalidation.10.0.0-preview4.nupkg.sha512",
+    "C:\\Users\\stefa\\.nuget\\packages\\fluentvalidation.aspnetcore\\10.0.0-preview4\\fluentvalidation.aspnetcore.10.0.0-preview4.nupkg.sha512",
+    "C:\\Users\\stefa\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\10.0.0-preview4\\fluentvalidation.dependencyinjectionextensions.10.0.0-preview4.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.4\\microsoft.aspnetcore.authentication.jwtbearer.5.0.4.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

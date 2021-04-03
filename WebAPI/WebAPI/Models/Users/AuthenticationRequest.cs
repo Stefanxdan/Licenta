@@ -1,12 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
 
 namespace WebAPI.Models.Users
 {
     public class AuthenticationRequest
     {
-        [Required]
+
         public string Username { get; set; }
-        [Required]
         public string Password { get; set; }
     }
+    
+    public class AuthRequestValidator : AbstractValidator<AuthenticationRequest>
+    {
+        public AuthRequestValidator()
+        {
+            RuleFor(x => x.Username)
+                .NotEmpty()
+                .Matches("^[a-zA-Z0-9]*$");
+            RuleFor(x => x.Password)
+                .NotEmpty();
+        }
+    }
 }
+

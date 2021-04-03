@@ -38,7 +38,7 @@ House Price Prediction web application
 	-> PricePredictionController
 		->
 ### Baza de date:
-	-> Users: id, username, password, name, email, telefon, fav_post_id[]
-	-> Favorite_posts: id, id_user, id_post
+	-> Users: id, username, password, firstname, lastname, role, email, telefon ( fav_post_id[] )
+	->( Favorite_posts: id, id_user, id_post )
 	-> Posts: id, isLocal, id_user, price, surface, bedrooms, bathroom, type, condition, partitioning, year, floor
 	-> Posts_imgs: id, id_post, path

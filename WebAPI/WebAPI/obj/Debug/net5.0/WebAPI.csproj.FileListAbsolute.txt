@@ -61,3 +61,6 @@ D:\Facultate\Licenta\WebAPI\WebAPI\obj\Debug\net5.0\WebAPI.genruntimeconfig.cach
 D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\AutoMapper.dll
 D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\FluentValidation.dll
+D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
+D:\Facultate\Licenta\WebAPI\WebAPI\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
