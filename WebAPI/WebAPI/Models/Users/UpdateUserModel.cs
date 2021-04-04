@@ -2,7 +2,7 @@
 
 namespace WebAPI.Models.Users
 {
-    public class UpdateModel
+    public class UpdateUserModel
     {
         [RegularExpression("^[a-zA-Z-]*$")]
         public string FirstName { get;  set; }

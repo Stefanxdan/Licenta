@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebAPI.Models
+namespace WebAPI.Models.Errors
 {
     public class ErrorResponse
     {

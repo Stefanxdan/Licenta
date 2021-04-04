@@ -20,7 +20,7 @@ namespace WebAPI.Services
         Task<IEnumerable<User>> GetAllUsers();
         Task<User> AddUser(RegisterModel request);
         Task<bool> DeleteUser(Guid id);
-        Task<bool> UpdateUser(Guid id, UpdateModel request);
+        Task<bool> UpdateUser(Guid id, UpdateUserModel request);
         Task<AuthenticationResponse> Authenticate(string username, string password);
     }
     public class UserService : IUserService
@@ -53,7 +53,7 @@ namespace WebAPI.Services
             return status;        
         }
 
-        public async Task<bool> UpdateUser(Guid id, UpdateModel request)
+        public async Task<bool> UpdateUser(Guid id, UpdateUserModel request)
         {
             var status = await _repository.Update(id, _mapper.Map<User>(request));
             return status;

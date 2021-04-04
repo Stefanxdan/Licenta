@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using WebAPI.Entities;
+using WebAPI.Models.Posts;
 using WebAPI.Models.Users;
 
 namespace WebAPI.Helpers
@@ -10,7 +11,10 @@ namespace WebAPI.Helpers
         {
             CreateMap<User, AuthenticationResponse>();
             CreateMap<RegisterModel, User>();
-            CreateMap<UpdateModel, User>();
+            CreateMap<UpdateUserModel, User>();
+
+            CreateMap<CreatePostModel, Post>();
+            CreateMap<UpdatePostModel, Post>();
 
         } 
     }
