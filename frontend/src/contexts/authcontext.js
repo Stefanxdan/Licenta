@@ -18,7 +18,9 @@ export function AuthProvider({children}) {
             email: email
         }
 
-        return axios.post('/Users', data)
+        return axios.post('/Users', data).catch(err =>{
+            return err.response.status
+        })
     }
 
     function login(username, password){
@@ -33,9 +35,9 @@ export function AuthProvider({children}) {
                 console.log(res.data)
             }
         ).catch(err =>{
-            console.log(err)
+            return err.response.data.status
         })
-    }
+    }   
     
     function logout(){
         setCurrentUser(null)

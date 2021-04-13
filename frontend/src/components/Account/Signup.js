@@ -29,8 +29,11 @@ export default function Signup() {
         try{
             setError("")
             setLoading(true)
-            await signup(usernameRef.current.value, emailRef.current.value, passwordRef.current.value)
-            history.push("/")
+            const message = await signup(usernameRef.current.value, emailRef.current.value, passwordRef.current.value)
+            if( message === 400)
+                setError("Username or email taken")
+            else
+                history.push("/")
         } catch {
             setError("Failed to create")
         }

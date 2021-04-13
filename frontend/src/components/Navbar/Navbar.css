@@ -12,6 +12,12 @@
     justify-self: start;
     margin-left: 20px;
     cursor: pointer;
+    text-decoration: none;
+}
+
+.navbar-logo:hover{
+    text-decoration: none;
+    color: white;
 }
 
 .fa-react{

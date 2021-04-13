@@ -20,10 +20,14 @@ export default function Login() {
         try{
             setError("")
             setLoading(true)
-            await login(usernameRef.current.value, passwordRef.current.value)
-            history.push("/")
+            const response = await login(usernameRef.current.value, passwordRef.current.value)
+            console.log(response);
+            if( response === 404)
+                setError('Username or password incorrect')
+            else
+                history.push("/")
         } catch {
-            setError("Failed to sign in")
+            setError('Failed')
         }
 
         setLoading(false)
@@ -65,7 +69,7 @@ export default function Login() {
                     </Card.Body>
                 </Card>
                 <div className='w-100 text-center mt-2'>
-                    Need an account? <Link to="/signup"> Sign Up</Link>
+                    Need an account? <Link to="/register"> Sign Up</Link>
                 </div >
                 
             </div>
