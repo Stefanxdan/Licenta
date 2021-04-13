@@ -3,19 +3,29 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home'
 import Posts from './components/Posts/Posts'
+import Signup from './components/Account/Signup'
+import Login from './components/Account/Login'
+import Account from './components/Account/Account'
+import PrivateRoute from './components/PrivateRoute'
+import { AuthProvider } from './contexts/authcontext';
 
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        < Navbar />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/posts" component={Posts} />
-        </Switch>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          < Navbar />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/posts" component={Posts} />
+            <PrivateRoute exact path="/account" component={Account} />
+            <Route exact path="/register" component={Signup} />
+            <Route exact path="/login" component={Login} />
+          </Switch>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
