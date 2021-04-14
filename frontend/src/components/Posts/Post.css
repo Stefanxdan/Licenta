@@ -1,0 +1,46 @@
+.card-container{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 0;
+}
+
+.img-container img{
+    margin: 0;
+    max-width: 300px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.card-info-container{
+    padding: 1rem;
+    width: 100%;
+}
+.card-title{
+    color: black;
+    font-weight: 600;
+}
+
+.card-small-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly
+}
+
+.card-infos{
+    font-size: 0.8rem;
+}
+
+.card-price{
+    color: #007bff;
+}
+
+
+.filter-container{
+    width: 300px;
+    padding: 1rem;
+    margin: 0 2rem;
+    background-color: whitesmoke;
+}
