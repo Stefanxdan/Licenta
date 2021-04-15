@@ -1,23 +1,15 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import Filters from './Filters'
 import PostCard from './Postcard'
-import './Post.css'
+import { Container } from 'react-bootstrap'
 
-export default function Posts() {
+
+
+export default function Posts(props) {
     return (
-        <div className="d-flex justify-content-center" style={{maxWidth: "2000px", margin: "auto"}}>
-            <div className="d-flex align-items-flex-start justify-content-center mt-5" >
-                <Filters />
-                <Container>
-                    <PostCard />
-                    <PostCard />
-                    <PostCard />
-                    <PostCard />
-                    <PostCard />
-                    <PostCard />
-                </Container>
-            </div>
-        </div>
+        <Container>
+            {props.posts.map((post,index) =>(
+                <PostCard post={post}  key={index} />   
+            ))}
+        </Container>
     )
 }

@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home'
-import Posts from './components/Posts/Posts'
+import PostsPage from './components/Posts/PostsPage'
 import Signup from './components/Account/Signup'
 import Login from './components/Account/Login'
 import Account from './components/Account/Account'
@@ -18,7 +18,7 @@ function App() {
           < Navbar />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/posts" component={Posts} />
+            <Route exact path="/posts" component={PostsPage} />
             <PrivateRoute exact path="/account" component={Account} />
             <Route exact path="/register" component={Signup} />
             <Route exact path="/login" component={Login} />
