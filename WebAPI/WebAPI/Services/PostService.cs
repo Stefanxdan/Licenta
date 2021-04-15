@@ -20,6 +20,7 @@ namespace WebAPI.Services
         Task<bool> DeletePost(Guid id);
         Task<bool> UpdatePost(Guid id, UpdatePostModel request);
         Task<bool> UserOwnsPost(Guid postId, Guid userId);
+        Task<int> GetTotalPostNumber();
     }
     
     public class PostService : IPostService
@@ -73,6 +74,11 @@ namespace WebAPI.Services
             if (post.IdUser == userId)
                 return true;
             return false;
+        }
+
+        public async Task<int> GetTotalPostNumber()
+        {
+            return await _repository.GetTotalPostNumber();
         }
     }
 }

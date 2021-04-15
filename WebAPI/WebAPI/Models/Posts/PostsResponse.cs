@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WebAPI.Entities;
 using WebAPI.Models.Queries;
@@ -9,8 +10,10 @@ namespace WebAPI.Models.Posts
     {
         public PostsResponse (){}
 
-        public PostsResponse(IEnumerable<Post> posts, string currentUri, PaginationQuery pq = null)
+        public PostsResponse(int totalPostsNumber, IEnumerable<Post> posts, string currentUri,
+            PaginationQuery pq = null)
         {
+            TotalPostsNumber = totalPostsNumber;
             Posts = posts;
 
             if (pq == null)
@@ -27,15 +30,24 @@ namespace WebAPI.Models.Posts
                 PageSize = pq.PageSize;
             }
 
-            if(Posts.Count() == PageSize)
-                NextPage = currentUri.Replace("PageNumber=" + PageNumber, "PageNumber=" + (PageNumber + 1))
-                    .Replace("PageSize=" + PageSize, "PageSize=" + (PageSize));
             
-            if( pq.PageNumber > 1)
-                PreviousPage = currentUri.Replace("PageNumber=" + PageNumber, "PageNumber=" + (PageNumber - 1))
-                    .Replace("PageSize=" + PageSize, "PageSize=" + (PageSize));
+            if (Posts.Count() + (PageNumber - 1) * PageSize < TotalPostsNumber)
+                NextPage = currentUri.Replace("PageNumber=" + PageNumber, "PageNumber=" + (PageNumber + 1));
+
+            if (pq.PageNumber > 1)
+            {
+                if (Posts.Count() == 0)
+                {
+                    var maxPageNUmber = Math.Ceiling((double)(TotalPostsNumber * 1.0 / PageSize));
+                    PreviousPage = currentUri.Replace("PageNumber=" + PageNumber,
+                        "PageNumber=" + maxPageNUmber);
+                }
+                else
+                    PreviousPage = currentUri.Replace("PageNumber=" + PageNumber, "PageNumber=" + (PageNumber - 1));
+            }
         }
-        
+
+        public int TotalPostsNumber { get; set; }
         public IEnumerable<Post> Posts { get; set; }
 
         public int? PageNumber { get; set; }

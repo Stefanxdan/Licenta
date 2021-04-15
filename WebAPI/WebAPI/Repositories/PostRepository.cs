@@ -12,6 +12,8 @@ namespace WebAPI.Repositories
         public interface IPostRepository : IRepository<Post>
         {
                 public IQueryable<Post> GetAllAsQueryable();
+
+                public Task<int> GetTotalPostNumber();
         }
 
         public class PostRepository : IPostRepository
@@ -37,6 +39,12 @@ namespace WebAPI.Repositories
                 {
                         return _dataContext.Posts.AsQueryable();
                 }
+
+                public async Task<int> GetTotalPostNumber()
+                {
+                        return await _dataContext.Posts.CountAsync();
+                }
+
                 public async Task<Post> Add(Post entity)
                 {
                         await _dataContext.Posts.AddAsync(entity);
