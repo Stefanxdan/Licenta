@@ -42,20 +42,22 @@ export default function PostsPage() {
         }
         
         fetchPosts();
-    },[currentPage])
+    },[currentPage, postsPerPage])
 
     // Change page
     const paginate = (pageNumber) => { setCurrentPage(pageNumber); } 
 
     return (
         <>
+            {loading ||
             <div className="d-flex  justify-content-center" style={{maxWidth: "2000px", margin: "auto"}}>
                 <div className="d-flex align-items-flex-start justify-content-center mt-5" >
                     <Filters />
                     <Posts posts={posts}/>
                 </div>
             </div>
-            <Pagination postPerPage={postsPerPage} totalPosts={totalPostsNumber} paginate={paginate}/>
+            }
+            <Pagination postPerPage={postsPerPage} totalPosts={totalPostsNumber} paginate={paginate} setPostsPerPage={setPostsPerPage}/>
         </>
     )
 }

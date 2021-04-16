@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
-export default function Pagination({postPerPage, totalPosts, paginate}) {
+export default function Pagination({postPerPage, totalPosts, paginate, setPostsPerPage}) {
     const pageNumbers = [];
+    const postPerPageRef = useRef()
 
     for(let i = 1; i <= Math.ceil(totalPosts / postPerPage); i++){
         pageNumbers.push(i);
@@ -13,9 +14,9 @@ export default function Pagination({postPerPage, totalPosts, paginate}) {
                 <ul className="pagination">
                     {pageNumbers.map(number => (
                         <li key={number} className="page-item">
-                            <a onClick={() => paginate(number)} className="page-link">
+                            <div onClick={() => paginate(number)} className="page-link">
                                 {number}
-                            </a>
+                            </div>
                         </li>
                     ))}
                 </ul>
@@ -23,7 +24,15 @@ export default function Pagination({postPerPage, totalPosts, paginate}) {
 
             <div className="d-flex  justify-content-center">
                 <span className="pl-3 pr-2">Posts Number: {totalPosts}</span>
-                <span className="pl-2 pr-2">postPerPage: {postPerPage}</span>
+                <span className="pl-2 pr-2">postPerPage: 
+                    <input 
+                        type="number"
+                        value={postPerPage} 
+                        ref={postPerPageRef}
+                        min="1"
+                        style={{width: "50px", textAlign: "center"}}
+                        onChange={() => setPostsPerPage(postPerPageRef.current.value)}/>
+                </span>
             </div>
         </>
     )

@@ -6,6 +6,7 @@ import PostsPage from './components/Posts/PostsPage'
 import Signup from './components/Account/Signup'
 import Login from './components/Account/Login'
 import Account from './components/Account/Account'
+import Map from './components/Map/Map'
 import PrivateRoute from './components/PrivateRoute'
 import { AuthProvider } from './contexts/authcontext';
 
@@ -22,6 +23,7 @@ function App() {
             <PrivateRoute exact path="/account" component={Account} />
             <Route exact path="/register" component={Signup} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/map" component={Map} />
           </Switch>
         </div>
       </Router>
