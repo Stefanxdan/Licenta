@@ -21,6 +21,8 @@ namespace WebAPI.Services
         Task<bool> UpdatePost(Guid id, UpdatePostModel request);
         Task<bool> UserOwnsPost(Guid postId, Guid userId);
         Task<int> GetTotalPostNumber();
+        Task<int> RemoveMultiple();
+        Task<bool> AddMultiple(IEnumerable<Post> posts);
     }
     
     public class PostService : IPostService
@@ -79,6 +81,16 @@ namespace WebAPI.Services
         public async Task<int> GetTotalPostNumber()
         {
             return await _repository.GetTotalPostNumber();
+        }
+
+        public async Task<int> RemoveMultiple()
+        {
+            return await _repository.RemoveMultiple();
+        }
+
+        public async Task<bool> AddMultiple(IEnumerable<Post> posts)
+        {
+            return await _repository.AddMultiple(posts);
         }
     }
 }

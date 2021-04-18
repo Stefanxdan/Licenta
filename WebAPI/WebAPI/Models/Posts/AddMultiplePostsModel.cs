@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using WebAPI.Entities;
 
-namespace WebAPICrawler.Models
+namespace WebAPI.Models.Posts
 {
-    public class Post
+    public class AddMultiplePost
     {
         public Guid IdUser { get; set; }
         public bool IsLocal { get; set; }
@@ -34,6 +36,10 @@ namespace WebAPICrawler.Models
         public string Type { get; set; }
         public string Condition { get; set; }
         public string Partitioning { get; set; }
-        
+    }
+
+    public class AddMultiplePostsModel
+    {
+        public IEnumerable<Post> posts { get; set; }
     }
 }

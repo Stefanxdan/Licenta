@@ -29,56 +29,12 @@ namespace WebAPICrawler
                 //Console.WriteLine(result);
                 //var responseObj = await response.Content.ReadAsAsync<Rootobject>();
                 if (responseObj != null) 
-                    return CustomMap(responseObj.ads);
+                    return Mapper.CustomMap(responseObj.ads);
             }
             
             return null;
         }
-
-        private static IList<Post> CustomMap(Ad[] responseObjAds)
-        {
-            IList<Post> posts = new List<Post>();
-
-            foreach (var ad in responseObjAds)
-            {
-                string json = JsonConvert.SerializeObject(ad, Formatting.Indented);
-                Console.WriteLine(json);
-                var post = new Post();
-                post.IdUser = new Guid("c73472ee-ca57-46a9-49dd-08d901192cf6");
-                post.IsLocal = false;
-                post.ForRent = true;
-                
-                post.Title = ad.title;
-                
-                post.Price = Convert.ToInt32(ad.list_label.Split(" ")[0]);
-                post.Currency = "EUR";
-                
-                post.CityLabel = ad.city_label;
-                post.Latitude = (float) Convert.ToDouble(ad.map_lat);
-                post.Longitude = (float) Convert.ToDouble(ad.map_lon);
-
-                var valueString =
-                    ad.listing_params?.First(e => e.key == "Suprafata construita (m²)").value.Split(" ")[0];
-                post.SurfaceBuilt = Convert.ToInt32(valueString);
-                
-                valueString = ad._params?.First(e => e[0] == "Suprafata utila (m²)")[1].Split(" ")[0];
-                post.SurfaceUseful = Convert.ToInt32(valueString);
-
-                valueString = ad.listing_params?.First(e => e.key == "Numarul de camere").value.Split(" ")[0];;
-                post.Bedrooms =  Convert.ToInt32(valueString);
-                
-                valueString = ad._params?.First(e => e[0] == "Numarul de bai")[1].Split(" ")[0];
-                post.Bathrooms = Convert.ToInt32(valueString);
-
-                post.Type = ad._params?.First(e => e[0] == "Tip proprietate")[1];
-                post.Condition = ad._params?.First(e => e[0] == "Stare")[1];
-                post.Partitioning = ad._params?.First(e => e[0] == "Compartimentare")[1];
-                
-                posts.Add(post);
-            }
-
-            return posts;
-        }
+        
 
         static void Main(string[] args)
         {
@@ -98,11 +54,14 @@ namespace WebAPICrawler
             {
                 // Get the posts
                 var posts = await GetPostsAsync("");
+                Console.WriteLine("[");
                 foreach (var post in posts)
                 {
                     string json = JsonConvert.SerializeObject(post, Formatting.Indented);
-                    //Console.WriteLine(json);
+                    Console.WriteLine(json);
+                    Console.WriteLine(",");
                 }
+                Console.WriteLine("]");
                 
             }
             catch (Exception e)

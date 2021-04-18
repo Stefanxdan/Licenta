@@ -14,6 +14,10 @@ namespace WebAPI.Repositories
                 public IQueryable<Post> GetAllAsQueryable();
 
                 public Task<int> GetTotalPostNumber();
+
+                public Task<bool> AddMultiple(IEnumerable<Post> posts);
+
+                public Task<int> RemoveMultiple();
         }
 
         public class PostRepository : IPostRepository
@@ -45,6 +49,13 @@ namespace WebAPI.Repositories
                         return await _dataContext.Posts.CountAsync();
                 }
 
+                public async Task<bool> AddMultiple(IEnumerable<Post> posts)
+                {
+                        await _dataContext.Posts.AddRangeAsync(posts);
+                        await _dataContext.SaveChangesAsync();
+                        return true;
+                }
+
                 public async Task<Post> Add(Post entity)
                 {
                         await _dataContext.Posts.AddAsync(entity);
@@ -52,6 +63,15 @@ namespace WebAPI.Repositories
                         return entity;
                 }
 
+                public async Task<int> RemoveMultiple()
+                {
+                        //var postToDelete = _dataContext.Posts.Where(p => p.IsLocal == false).AsQueryable();
+                        //_dataContext.RemoveRange(postToDelete);
+                        int noOfRowDeleted = await _dataContext.Database.ExecuteSqlRawAsync("delete from Posts where IsLocal='false'");
+                        //await _dataContext.SaveChangesAsync();
+                        return noOfRowDeleted;
+                }
+                
                 public async Task<bool> Remove(Guid id)
                 {
                         var post = await GetById(id);

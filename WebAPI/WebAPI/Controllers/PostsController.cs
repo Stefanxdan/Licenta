@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services;
 using WebAPI.Entities;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -38,6 +37,24 @@ namespace WebAPI.Controllers
             var postCreated = await _postService.AddPost(post, Guid.Parse(currentUser));
             
             return postCreated == null ? BadRequest() : Ok(postCreated);
+        }
+        
+        [HttpPost("AddMultiple")]
+        [Authorize(Roles = Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> AddMultiplePosts(AddMultiplePostsModel model)
+        {
+            await _postService.AddMultiple(model.posts);
+            return  Ok();
+        }
+        
+        [HttpDelete("DeleteMultiple")]
+        [Authorize(Roles = Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteMultiplePosts()
+        {
+            var res = await _postService.RemoveMultiple();
+            return  Ok(res);
         }
         
         [HttpGet]
