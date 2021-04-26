@@ -4,6 +4,7 @@ namespace WebAPICrawler.Models
 {
     public class Post
     {
+        public DateTime TimeAdded { get; set; }
         public Guid IdUser { get; set; }
         public bool IsLocal { get; set; }
         public bool ForRent { get; set; }

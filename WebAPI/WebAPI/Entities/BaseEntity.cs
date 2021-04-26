@@ -7,6 +7,6 @@ namespace WebAPI.Entities
     {
         [Key]
         public Guid Id { get; set; }
-        public DateTime TimeAdded { get; set; }
+        public DateTime TimeAdded { get; set; } = DateTime.Now;
     }
 }

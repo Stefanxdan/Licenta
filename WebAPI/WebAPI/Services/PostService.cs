@@ -15,7 +15,8 @@ namespace WebAPI.Services
     public interface IPostService
     {
         Task<Post> GetPostById(Guid id);
-        Task<IEnumerable<Post>> GetAllPosts(PaginationQuery paginationQuery = null);
+        Task<IEnumerable<Post>> GetPosts(PaginationQuery paginationQuery = null);
+        Task<IEnumerable<CompactPostResponse>> GetAllPostsCompact();
         Task<Post> AddPost(CreatePostModel request, Guid idUser);
         Task<bool> DeletePost(Guid id);
         Task<bool> UpdatePost(Guid id, UpdatePostModel request);
@@ -41,13 +42,18 @@ namespace WebAPI.Services
             return await _repository.GetById(id);
         }
 
-        public async Task<IEnumerable<Post>> GetAllPosts(PaginationQuery paginationQuery = null)
+        public async Task<IEnumerable<Post>> GetPosts(PaginationQuery paginationQuery = null)
         {
             if (paginationQuery == null || paginationQuery.PageNumber < 1 || paginationQuery.PageSize < 1)
                 return await _repository.GetAllAsQueryable().Take(50).ToListAsync();
 
             var skip = (paginationQuery.PageNumber - 1) * paginationQuery.PageSize;
             return await _repository.GetAllAsQueryable().Skip(skip).Take(paginationQuery.PageSize).ToListAsync();
+        }
+
+        public async Task<IEnumerable<CompactPostResponse>> GetAllPostsCompact()
+        {
+            return await _repository.GetAllCompactAsQueryable().ToListAsync();
         }
 
         public async Task<Post> AddPost(CreatePostModel request, Guid idUser)

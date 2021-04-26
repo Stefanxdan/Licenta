@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> AddMultiplePosts(AddMultiplePostsModel model)
         {
-            await _postService.AddMultiple(model.posts);
+            await _postService.AddMultiple(model.Posts);
             return  Ok();
         }
         
@@ -59,12 +59,20 @@ namespace WebAPI.Controllers
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllPosts([FromQuery] PaginationQuery paginationQuery)
+        public async Task<IActionResult> GetPosts([FromQuery] PaginationQuery paginationQuery)
         {
-            var posts = await _postService.GetAllPosts(paginationQuery);
+            var posts = await _postService.GetPosts(paginationQuery);
             var totalPostNumber = await _postService.GetTotalPostNumber();
             var postsResponse = new PostsResponse(totalPostNumber, posts, HttpContext.Request.GetDisplayUrl(), paginationQuery);
             return Ok(postsResponse);
+        }
+        
+        [HttpGet("compact")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllPosts()
+        {
+            var posts = await _postService.GetAllPostsCompact();
+            return Ok(posts);
         }
 
         [HttpGet("{id}")]

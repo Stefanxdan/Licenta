@@ -11,7 +11,7 @@ export default function PostsPage() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(100);
 
     //initial Posts
     /*

@@ -1,9 +1,8 @@
 import React, {useState,useEffect} from 'react'
 import ReactMapGp, {Marker, Popup} from 'react-map-gl'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import "./map.css"
-import * as assets from "../../assets/storiaApiResponse.json"
-
 
 export default function Map() {
     
@@ -16,6 +15,19 @@ export default function Map() {
     }); 
 
     const [selectedAsset, setSelectedAsset] = useState(null);
+    const [posts, setPosts] = useState(null);
+
+    useEffect(() => {
+        const fetchPosts = async () =>{
+            //setLoading(true);
+            const res = await axios.get('/Posts/compact');
+            setPosts(res.data);
+            //setLoading(false);
+            console.log("posts call")
+        }
+
+        fetchPosts();
+    }, [])
 
     useEffect(() => {
         console.log(selectedAsset?.id)
@@ -34,10 +46,10 @@ export default function Map() {
                 onViewportChange={(newView) => setViewport(newView)}
                 mapboxApiAccessToken='pk.eyJ1Ijoic3RlZmFueGQ5OSIsImEiOiJja25qOW1nejQwaG41MnBwOHBpaXBzZXVwIn0.RGQrkmMTrau5mQaPrj6FLQ'
             >
-                {assets?.ads.map((add) =>(
+                {posts?.slice(0, 1000).map((add) =>(
                     <Marker 
-                    latitude={Number.parseFloat(add?.map_lat)} 
-                    longitude={Number.parseFloat(add?.map_lon)}
+                    latitude={Number.parseFloat(add?.latitude)} 
+                    longitude={Number.parseFloat(add?.longitude)}
                     key={add?.id}
                     >
                         <div 
@@ -49,13 +61,13 @@ export default function Map() {
                 ))}
                 {selectedAsset ? (
                     <Popup 
-                        latitude={Number.parseFloat(selectedAsset?.map_lat)} 
-                        longitude={Number.parseFloat(selectedAsset?.map_lon)}
+                        latitude={Number.parseFloat(selectedAsset?.latitude)} 
+                        longitude={Number.parseFloat(selectedAsset?.longitude)}
                         onClose={closePopup}
                         closeButton={true}
                         closeOnClick={false}
                     >
-                        <Link to={`/posts/${selectedAsset?.id}`}>
+                        <Link to={`/posts/post/${selectedAsset?.title}`}>
                             {selectedAsset?.title}
                         </Link>
                     </Popup>

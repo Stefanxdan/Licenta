@@ -15,6 +15,7 @@ namespace WebAPI.Helpers
 
             CreateMap<CreatePostModel, Post>();
             CreateMap<UpdatePostModel, Post>();
+            CreateMap<Post, CompactPostResponse>();
 
         } 
     }

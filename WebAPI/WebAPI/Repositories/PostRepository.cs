@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.Entities;
+using WebAPI.Models.Posts;
 
 namespace WebAPI.Repositories
 {
@@ -12,6 +13,7 @@ namespace WebAPI.Repositories
         public interface IPostRepository : IRepository<Post>
         {
                 public IQueryable<Post> GetAllAsQueryable();
+                public IQueryable<CompactPostResponse> GetAllCompactAsQueryable();
 
                 public Task<int> GetTotalPostNumber();
 
@@ -42,6 +44,18 @@ namespace WebAPI.Repositories
                 public IQueryable<Post> GetAllAsQueryable()
                 {
                         return _dataContext.Posts.AsQueryable();
+                }
+                
+                public IQueryable<CompactPostResponse> GetAllCompactAsQueryable()
+                {
+                        return _dataContext.Posts.Select(p => new CompactPostResponse() 
+                        { 
+                                Id = p.Id,
+                                Title = p.Title, 
+                                Latitude = p.Latitude,
+                                Longitude = p.Longitude,
+                                MapRadius = p.MapRadius
+                        }).AsQueryable();
                 }
 
                 public async Task<int> GetTotalPostNumber()
@@ -94,14 +108,20 @@ namespace WebAPI.Repositories
                         
                         post.ForRent = entity.ForRent;
                         post.Title = entity.Title;
+                        post.Description = entity.Description;
                         post.Price = entity.Price;
                         post.Currency = entity.Currency;
                         post.CityLabel = entity.CityLabel;
-                        post.Latitude = entity.Longitude;
+                        post.Latitude = entity.Latitude;
+                        post.Longitude = entity.Longitude;
+                        post.MapRadius = entity.MapRadius;
                         post.SurfaceBuilt = entity.SurfaceBuilt;
                         post.SurfaceUseful = entity.SurfaceUseful;
                         post.Bedrooms = entity.Bedrooms;
                         post.Bathrooms = entity.Bathrooms;
+                        post.BuildingYear = entity.BuildingYear;
+                        post.FloorPosition = entity.FloorPosition;
+                        post.FloorsBuilding = entity.FloorsBuilding;
                         post.Type = entity.Type;
                         post.Condition = entity.Condition;
                         post.Partitioning = entity.Partitioning;

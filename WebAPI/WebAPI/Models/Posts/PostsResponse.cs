@@ -48,7 +48,6 @@ namespace WebAPI.Models.Posts
         }
 
         public int TotalPostsNumber { get; set; }
-        public IEnumerable<Post> Posts { get; set; }
 
         public int? PageNumber { get; set; }
         
@@ -57,5 +56,8 @@ namespace WebAPI.Models.Posts
         public string NextPage { get; set; }
         
         public string PreviousPage { get; set; }
+        
+        public IEnumerable<Post> Posts { get; set; }
+
     }
 }

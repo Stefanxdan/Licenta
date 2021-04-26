@@ -11,19 +11,28 @@ namespace WebAPI.Entities
         public Guid IdUser { get; set; }
         [JsonIgnore]
         public User User { get; set; }
-        [JsonIgnore]
         public bool IsLocal { get; set; }
         public bool ForRent { get; set; }
         
+        public string ExternalUrl { get; set; }
+
         public string Title { get; set; }
+        public string Description { get; set; }
         public int Price { get; set; }
         public string Currency { get; set; }
+        public string PhotosPaths { get; set; }
+
         [Column("City_label")]
         public string CityLabel { get; set; }
-
         public float Latitude { get; set; }
         public float Longitude { get; set; }
+        public int MapRadius { get; set; }
         
+        public int BuildingYear { get; set; }
+        
+        public int FloorPosition { get; set; }
+        public int FloorsBuilding { get; set; }
+
         [Column("Surface_built")]
         public int SurfaceBuilt { get; set; }
         [Column("Surface_useful")]
