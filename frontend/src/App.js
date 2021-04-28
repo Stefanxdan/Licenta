@@ -3,7 +3,7 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home'
 import PostsPage from './components/Posts/PostsPage'
-import PostPage from './components/Posts/PostPage'
+import PostPage from './components/Post/PostPage'
 import Signup from './components/Account/Signup'
 import Login from './components/Account/Login'
 import Account from './components/Account/Account'
@@ -21,7 +21,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/posts" component={PostsPage} />
-            <Route path="/posts/post" component={PostPage} />
+            <Route exact path="/posts/:idPost" component={PostPage} />
             <PrivateRoute exact path="/account" component={Account} />
             <Route exact path="/register" component={Signup} />
             <Route exact path="/login" component={Login} />
