@@ -1,5 +1,6 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import ReactMapGp, {Popup, Source, Layer} from 'react-map-gl'
+import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from './layers';
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import "./map.css"
@@ -8,6 +9,29 @@ import "./map.css"
 function getCursor({isHovering, isDragging}) {
     return isDragging ? 'grabbing' : isHovering ? 'pointer' : 'default';
   }
+
+function PostToGeoJson(posts){
+    let obj = {
+        type: 'FeatureCollection',
+        features: []
+    }
+
+    posts?.map((post) =>{
+        obj.features.push({
+            type: 'Feature',
+            geometry: {type: 'Point', coordinates: [post.longitude,post.latitude]},
+            properties: {
+                id: post.id,
+                title: post.title,
+                latitude: post.latitude,
+                longitude: post.longitude
+            }
+        })
+        return 0
+    })
+
+    return obj;
+}
 
 export default function Map() {
 
@@ -19,45 +43,32 @@ export default function Map() {
         zoom: 12
     }); 
 
+    const mapRef = useRef(null);
+
+    const [loading, setLoading] = useState(true)
     const [selectedAsset, setSelectedAsset] = useState(null);
     //const [posts, setPosts] = useState(null);
     const [geoData, setGeoData] = useState(null)
 
     useEffect(() => {
         const fetchPosts = async () =>{
-            //setLoading(true);
+            console.log("posts call")
+            
             const res = await axios.get('/Posts/compact');
             //setPosts(res.data);
-            //setLoading(false);
-            console.log("posts call")
-
-            let obj = {
-                type: 'FeatureCollection',
-                features: []
-            }
-    
-            res.data?.map((post) =>{
-                obj.features.push({
-                    type: 'Feature',
-                    geometry: {type: 'Point', coordinates: [post.longitude,post.latitude]},
-                    properties: {
-                        id: post.id,
-                        title: post.title,
-                        latitude: post.latitude,
-                        longitude: post.longitude
-                    }
-                })
-                return 0
-            })
-            setGeoData(obj)
+            setGeoData(PostToGeoJson(res.data))
+            setLoading(false);
         }
-        fetchPosts();
+        setTimeout(() => {fetchPosts()},500);
+
     }, [])
+
 
     const closePopup = () => {
         setSelectedAsset(null)
     };
 
+    /*
     const layerStyle = {
     id: 'point',
     type: 'circle',
@@ -69,10 +80,36 @@ export default function Map() {
         'circle-stroke-opacity': 0.5
     }
     };
-    
+    */
+
     const onClickMap = (evt) =>{
-        if(evt.features.length !== 0)
-            setSelectedAsset(evt.features[0].properties)
+        console.log(evt.features)
+        if(evt.features.length === 0)
+            return
+        const feature = evt.features[0]
+        if( feature?.layer?.id === "point"){
+            setSelectedAsset(feature.properties)
+            return
+        }
+
+        const clusterId = feature.properties?.cluster_id;
+
+        const mapboxSource = mapRef.current.getMap().getSource('adds');
+
+        mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
+        if (err) {
+            return;
+        }
+
+        setViewport({
+            ...viewport,
+            longitude: feature.geometry.coordinates[0],
+            latitude: feature.geometry.coordinates[1],
+            zoom,
+            transitionDuration: 500
+        });
+        });
+
       }
 
     return (
@@ -85,10 +122,20 @@ export default function Map() {
                 mapboxApiAccessToken='pk.eyJ1Ijoic3RlZmFueGQ5OSIsImEiOiJja25qOW1nejQwaG41MnBwOHBpaXBzZXVwIn0.RGQrkmMTrau5mQaPrj6FLQ'
                 onClick={e => onClickMap(e)}
                 getCursor={getCursor}
-
+                //interactiveLayerIds={[clusterLayer.id]}
+                ref={mapRef}
             >
-                <Source id="adds" type="geojson" data={geoData}>
-                    <Layer {...layerStyle} />
+                <Source 
+                    id="adds" 
+                    type="geojson" 
+                    data={geoData}
+                    cluster={true}
+                    clusterMaxZoom={15}
+                    clusterRadius={41}
+                >
+                    <Layer {...clusterLayer} />
+                    <Layer {...clusterCountLayer} />
+                    <Layer {...unclusteredPointLayer} />
                 </Source>
                 {/*
                 posts?.slice(0, 2).map((add) =>(
@@ -119,6 +166,13 @@ export default function Map() {
                         </Link>
                     </Popup>
                 ) : null }
+
+                {loading ? (
+                    <div className="loading-spiner-container">
+                        <i className="loading-spiner fas fa-spinner fa-pulse"></i>
+                    </div>
+                    ) : null
+                }
 
             </ReactMapGp>
         </div>
