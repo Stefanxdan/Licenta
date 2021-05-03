@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-slideshow-image/dist/styles.css'
 import axios from 'axios'
 
 axios.defaults.baseURL = "http://localhost:5000/api"

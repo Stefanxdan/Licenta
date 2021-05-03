@@ -1,0 +1,15 @@
+.slider{
+    max-width: 1200px;
+    margin: auto;    
+    padding: 10px 20px;
+}
+
+.each-slide > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 600px;
+}

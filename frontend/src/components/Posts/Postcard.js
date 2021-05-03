@@ -10,7 +10,7 @@ export default function PostCard(props) {
         <Link to={`/posts/${post?.id}`} className="card-LinkTo">
             <div className="card-container">
                 <div className="img-container">
-                    <img src={post?.photosPaths?.split("<>")[0]} alt="Logo"/>
+                    <img src={post?.photosPaths?.split("<>")[0]} alt="PostImg"/>
                 </div>
                 <span className="card-info-container">
                     <div className='card-title'>{post.title}</div>
