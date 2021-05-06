@@ -52,26 +52,20 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserById(Guid id)
         {
-            var currentUser = User.Identity?.Name ?? string.Empty;
-            if (currentUser == string.Empty)
-            {
-                return BadRequest("You are not logged in");
-            }
-                
-            var currentUserId = Guid.Parse(currentUser);
-            if (id != currentUserId && !User.IsInRole(Role.Admin))
-            {
-                return Forbid();
-            }
             var user = await _userService.GetUserById(id);
             if (user == null)
                 return NotFound();
+            
+            var currentUser = User.Identity?.Name ?? string.Empty;
+            if (currentUser == string.Empty)
+                user.Email = null;
+            else if (id != Guid.Parse(currentUser) && !User.IsInRole(Role.Admin))
+                    user.Email = null;
             return Ok(user);
         }
         

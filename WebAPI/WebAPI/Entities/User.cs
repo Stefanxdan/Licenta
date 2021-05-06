@@ -13,9 +13,10 @@ namespace WebAPI.Entities
         public string LastName { get; set; }
         public string Role { get;  set; }
         public string PhoneNumber { get; set; }
+        public string ProfileImage { get; set; }
         [JsonIgnore]
         public string Password { get; set; }
-
+        [JsonIgnore]
         public List<Post> Posts { get; set; }
     }
 }
