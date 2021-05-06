@@ -13,10 +13,10 @@ export default function OwnerDetailes({post}) {
     else
         return (
             <div className="post-owner">
-                <img src={storia} />
+                <img src={storia} alt="owner"/>
                 <div className="post-owner-info">
                     <h4>{name}</h4>
-                    <div>View the orignal post from storia: <a href={post?.externalUrl} target="_blank">here</a></div>
+                    <div>View the orignal post from storia: <a href={post?.externalUrl} target="_blank" rel="noreferrer">here</a></div>
                 </div>
             </div>
         )

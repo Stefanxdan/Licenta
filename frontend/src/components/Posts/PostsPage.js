@@ -10,6 +10,7 @@ export default function PostsPage() {
     const [totalPostsNumber, settotalPostsNumber] = useState([]);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(100);
 
@@ -35,9 +36,18 @@ export default function PostsPage() {
                 PageNumber: currentPage,
                 PageSize: postsPerPage
             }
-            const res = await axios.get('/Posts', {params});
-            setPosts(res.data?.posts);
-            settotalPostsNumber(res.data?.totalPostsNumber)
+            await axios.get('/Posts', {params})
+            .then(response => { 
+                setPosts(response.data?.posts);
+                settotalPostsNumber(response.data?.totalPostsNumber)
+            })
+            .catch(error => {
+                if(error?.response?.status)
+                    setErr(error?.response?.status + " " + error?.response?.statusText)
+                else
+                    setErr("ERR_CONNECTION_REFUSED")
+            });
+            
             setLoading(false);
         }
         
@@ -49,15 +59,23 @@ export default function PostsPage() {
 
     return (
         <>
-            {loading ||
-            <div className="d-flex  justify-content-center" style={{maxWidth: "2000px", margin: "auto"}}>
-                <div className="d-flex align-items-flex-start justify-content-center mt-5" >
-                    <Filters />
-                    <Posts posts={posts}/>
+            {loading ? (
+                <div className="loading-spiner-container">
+                    <i className="loading-spiner fas fa-spinner fa-pulse"></i>
                 </div>
-            </div>
-            }
-            <Pagination postPerPage={postsPerPage} totalPosts={totalPostsNumber} paginate={paginate} setPostsPerPage={setPostsPerPage}/>
+            ): err ? (
+               <div className="err-response">{err}</div>
+            ):(
+            <>
+                <div className="d-flex  justify-content-center" style={{maxWidth: "2000px", margin: "auto"}}>
+                    <div className="d-flex align-items-flex-start justify-content-center mt-5" >
+                        <Filters />
+                        <Posts posts={posts}/>
+                    </div>
+                </div>
+                <Pagination postPerPage={postsPerPage} totalPosts={totalPostsNumber} paginate={paginate} setPostsPerPage={setPostsPerPage}/>
+            </>
+            )}
         </>
     )
 }

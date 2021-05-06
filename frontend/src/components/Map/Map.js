@@ -45,18 +45,25 @@ export default function Map() {
 
     const mapRef = useRef(null);
 
+    const [err, setErr] = useState();
     const [loading, setLoading] = useState(true)
     const [selectedAsset, setSelectedAsset] = useState(null);
     //const [posts, setPosts] = useState(null);
     const [geoData, setGeoData] = useState(null)
 
     useEffect(() => {
-        const fetchPosts = async () =>{
-            console.log("posts call")
-            
-            const res = await axios.get('/Posts/compact');
-            //setPosts(res.data);
-            setGeoData(PostToGeoJson(res.data))
+        const fetchPosts = async () =>{            
+            await axios.get('/Posts/compact')
+            .then(response => { 
+                //setPosts(response.data);
+                setGeoData(PostToGeoJson(response.data))
+            })
+            .catch(error => {
+                if(error?.response?.status)
+                    setErr(error?.response?.status + " " + error?.response?.statusText)
+                else
+                    setErr("ERR_CONNECTION_REFUSED")
+            });            
             setLoading(false);
         }
         setTimeout(() => {fetchPosts()},500);
@@ -171,7 +178,9 @@ export default function Map() {
                     <div className="loading-spiner-container">
                         <i className="loading-spiner fas fa-spinner fa-pulse"></i>
                     </div>
-                    ) : null
+                ) : err ? (
+                    <div className="err-response">{err}</div>
+                ) : null
                 }
 
             </ReactMapGp>

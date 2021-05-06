@@ -7,13 +7,13 @@ export default function PostProprieties({post}) {
     return (
         <div className="post-prop-container">
             <div className="post-prop">
-                For: {post?.forRent ? "Rent" : "Buying"}
+                For: <b>{post?.forRent ? "Rent" : "Buying"}</b>
             </div>
             {
                 propName.map((prop,index) =>
                     { return propValue[index] ?
                         (<div className="post-prop" key={index}>
-                            {prop}: {propValue[index]}
+                            {prop}: <b>{propValue[index]}</b>
                         </div>)
                     : null
                     }
