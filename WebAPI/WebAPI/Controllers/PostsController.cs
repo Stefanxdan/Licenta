@@ -16,10 +16,13 @@ namespace WebAPI.Controllers
     public class PostsController : Controller
     {
         private readonly IPostService _postService;
+        private readonly IUserService _userService;
 
-        public PostsController(IPostService postService)
+
+        public PostsController(IPostService postService, IUserService userService)
         {
             _postService = postService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -75,12 +78,29 @@ namespace WebAPI.Controllers
             return Ok(posts);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPostById(Guid id)
         {
             var posts = await _postService.GetPostById(id);
+            if (posts == null)
+                return NotFound();
+            return Ok(posts);
+        }
+        
+        [HttpGet("user/{userId:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetPostByUserId(Guid userId)
+        {
+            var user = await _userService.GetUserById(userId);
+            if (user == null)
+                return NotFound();
+            if (user.Role != "User")
+                return Forbid();
+            var posts = await _postService.GetPostsByUserId(userId);
             if (posts == null)
                 return NotFound();
             return Ok(posts);
