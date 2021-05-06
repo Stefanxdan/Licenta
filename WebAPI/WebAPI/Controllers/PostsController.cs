@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
             return Ok(postsResponse);
         }
         
-        [HttpGet("compact")]
+        [HttpGet("map")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllPosts()
         {

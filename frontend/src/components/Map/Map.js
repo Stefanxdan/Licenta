@@ -53,7 +53,7 @@ export default function Map() {
 
     useEffect(() => {
         const fetchPosts = async () =>{            
-            await axios.get('/Posts/compact')
+            await axios.get('/Posts/map')
             .then(response => { 
                 //setPosts(response.data);
                 setGeoData(PostToGeoJson(response.data))
