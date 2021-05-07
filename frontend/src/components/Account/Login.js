@@ -21,11 +21,10 @@ export default function Login() {
             setError("")
             setLoading(true)
             const response = await login(usernameRef.current.value, passwordRef.current.value)
-            console.log(response);
             if( response === 404)
                 setError('Username or password incorrect')
             else
-                history.push("/")
+                history.push("/account")
         } catch {
             setError('Failed')
         }

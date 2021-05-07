@@ -32,7 +32,6 @@ export function AuthProvider({children}) {
         return axios.post('/Users/authenticate', data).then(
             res => {
                 setCurrentUser(res.data)
-                console.log(res.data)
             }
         ).catch(err =>{
             return err.response.data.status
