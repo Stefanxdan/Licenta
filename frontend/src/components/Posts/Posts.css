@@ -1,13 +1,19 @@
 .card-LinkTo:hover{
     text-decoration: none;
 }
+.card-LinkTo:hover{
+    text-decoration-color: currentColor;
+}
+
 
 .card-container{
     display: flex;
     flex-direction: row;
     margin: 10px;
     border: 1px solid lightgray;
+    background-color: white;
     border-radius: 5px;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
     padding: 0;
 }
 
@@ -24,6 +30,31 @@
     border-top-left-radius: 5px;
 }
 
+.card-buttons{
+    padding: 1rem 2rem 1rem 1rem;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    height: 220px;
+    justify-content: space-evenly;
+}
+
+.card-buttons .fa-edit{
+    color: rgba(73, 63, 255, 0.4);
+}
+
+.card-buttons .fa-trash-alt{
+    color: rgba(255, 0, 0, 0.5);
+}
+
+.card-buttons .fa-edit:hover{
+    color: rgba(73, 63, 255, 0.9);
+}
+
+.card-buttons .fa-trash-alt:hover{
+    color: rgba(255, 0, 0, 0.9 );
+}
+
 .card-info-container{
     padding: 1rem;
     width: 100%;
@@ -34,6 +65,7 @@
 }
 
 .card-small-container{
+    color: #007bff;
     display: flex;
     align-items: center;
     justify-content: space-evenly
@@ -41,10 +73,6 @@
 
 .card-infos{
     font-size: 0.8rem;
-}
-
-.card-price{
-    color: #007bff;
 }
 
 

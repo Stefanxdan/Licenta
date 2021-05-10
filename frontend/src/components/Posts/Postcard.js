@@ -22,8 +22,14 @@ export default function PostCard(props) {
                         </div>
                         <div className='card-price'>{post.price}$</div>
                     </div>
-                    
                 </span> 
+                {props.editable &&
+                <div className="card-buttons">
+                    <i className="far fa-edit fa-2x"></i>
+                    <i className="far fa-trash-alt fa-2x"></i>
+                </div>
+                }
+                
             </div>
         </Link>
     )

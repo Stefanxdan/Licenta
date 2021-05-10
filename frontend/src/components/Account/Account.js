@@ -4,6 +4,7 @@ import {useHistory } from 'react-router-dom'
 import AccountCard from "./AccountCard"
 import MyPostsCard from "./MyPostsCard"
 import FavPostsCard from "./FavPostsCard"
+import Posts from "../Posts/Posts"
 import axios from 'axios'
 import "./Account.css"
 
@@ -70,9 +71,10 @@ export default function Account() {
             <div className="account-page-inner">
                 <AccountCard user={user} handleLogout={handleLogout}/>
                 <div className="flex-wrap" style={{justifyContent:' space-between'}}>
-                    <MyPostsCard  myPost={myPost}/>
-                    <FavPostsCard />
+                    <MyPostsCard  myPostNumber={myPost?.length}/>
+                    <FavPostsCard favPostNumber={myPost?.length}/>
                 </div>
+                <Posts posts={myPost} editable={true}  />
             </div>
             }
         </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function FavPostsCard() {
+export default function FavPostsCard({favPostNumber}) {
     return (
         <div className="acc-posts-card">
             <h4><strong>Favorites Posts</strong></h4>
@@ -11,7 +11,7 @@ export default function FavPostsCard() {
                     
                 </div>
                 <div>
-                    No. 0                     
+                    No. {favPostNumber}                     
                     </div>
             </div>
         </div>
