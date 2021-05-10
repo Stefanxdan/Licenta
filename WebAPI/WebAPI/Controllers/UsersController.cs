@@ -91,7 +91,7 @@ namespace WebAPI.Controllers
             var response = await _userService.UpdateUser(id, request);
             if (!response)
             {
-                return NotFound(id);
+                return BadRequest("Email is already taken");
             }
 
             return NoContent();

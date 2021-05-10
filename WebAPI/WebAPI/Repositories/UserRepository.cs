@@ -44,6 +44,9 @@ namespace WebAPI.Repositories
 
         public async Task<bool> Update(Guid id, User updatedUser)
         {
+            var unique = await _dataContext.Users.Where( u => u.Email == updatedUser.Email).FirstOrDefaultAsync();
+            if (unique != null)
+                return false;
             var user = await GetById(id);
             if (user == null)
             {
