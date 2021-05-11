@@ -1,6 +1,6 @@
 .account-page{
     background-color: whitesmoke;
-    height:100vh;
+    height:100%;
     padding: 20px 0;
 }
 .account-page-inner{
@@ -25,20 +25,26 @@
 .flex-wrap{
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 }
 .flex-wrap .account-item{
     flex-grow: 1;
 }
 
-.flex-wrap .account-item .detail{
+.flex-wrap .flx-grow1{
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.detail{
     padding: 10px;
 }
 
-.flex-wrap .account-item .detail label{
+.detail label{
     padding-right: 10px;
 }
 
-.flex-wrap .account-item .detail input{
+.detail input{
     padding: 5px;
     border: solid rgba(0, 0, 0, 0.15) 1px;
     border-radius: 10px;
@@ -104,8 +110,6 @@
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
-.acc-posts-card .apc-txt{
-}
 
 .acc-posts-card .apc-flex{
     height: 55%;
@@ -130,4 +134,43 @@
 
 .acc-posts-card .fa-plus:hover{
     color: rgba(73, 63, 255, 0.4);
+}
+
+.addPost{
+    padding: 2rem;
+}
+
+.addPost input{
+    width: 100%;
+}
+
+.addPost select{
+    width: 100%;
+    padding: 5px;
+    border: solid rgba(0, 0, 0, 0.15) 1px;
+    border-radius: 10px;
+}
+
+.addPost textarea{
+    width: 100%;
+    padding: 5px;
+    border: solid rgba(0, 0, 0, 0.15) 1px;
+    border-radius: 10px;
+}
+
+.addPost label{
+    width: 300px;
+}
+
+.addPost .price {
+    width: max-content;
+}
+
+
+.addPost .price select{
+    width:30%;
+}
+
+.addPost .price input{
+    width: 70%;
 }

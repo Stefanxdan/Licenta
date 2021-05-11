@@ -7,7 +7,7 @@ export default function PostMap({post}) {
     const [viewport, setViewport] = useState({
         latitude: post?.latitude,
         longitude: post?.longitude,
-        width: "1000px",
+        width: "1100px",
         height: "600px",
         zoom: 14
     }); 

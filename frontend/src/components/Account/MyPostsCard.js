@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function MyPostsCard({myPostNumber}) {
     return (
@@ -10,7 +11,7 @@ export default function MyPostsCard({myPostNumber}) {
                     No. {myPostNumber}                     
                 </div>
                 <div>
-                    <i className="fas fa-plus fa-2x"></i>                   
+                    <Link to="/posts/add"><i className="fas fa-plus fa-2x"></i></Link>                
                 </div>
             </div>
         </div>

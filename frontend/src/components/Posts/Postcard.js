@@ -20,7 +20,7 @@ export default function PostCard(props) {
                             <div>{post.bathrooms} bathrooms</div>
                             <div>{post.surfaceUseful} m^2</div>
                         </div>
-                        <div className='card-price'>{post.price}$</div>
+                        <div className='card-price'>{post.price}{post.currency==="EUR" ? "€" : post.currency}</div>
                     </div>
                 </span> 
                 {props.editable &&

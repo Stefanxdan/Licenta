@@ -6,8 +6,8 @@ export default function AccountCard({user,setUser,handleLogout}) {
 
     const [editMode, setEditMode] = useState(false);
     const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, formState: { errors }} = useForm();
     const [err, setErr] = useState(false);
+    const { register, handleSubmit, formState: { errors }} = useForm();
 
 
 
