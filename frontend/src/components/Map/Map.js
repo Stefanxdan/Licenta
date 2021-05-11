@@ -66,8 +66,8 @@ export default function Map() {
             });            
             setLoading(false);
         }
-        setTimeout(() => {fetchPosts()},500);
-
+        //setTimeout(() => {fetchPosts()},500);
+        fetchPosts();
     }, [])
 
 

@@ -49,8 +49,10 @@ export default function Account() {
             setLoading2(false);
         }
         
-        setTimeout(() => {fetchUser()},500);
-        setTimeout(() => {fetchPosts()},500);
+        //setTimeout(() => {fetchUser()},500);
+        //setTimeout(() => {fetchPosts()},500);
+        fetchUser();
+        fetchPosts();
     }, [currentUser?.id])
 
     function handleLogout(){

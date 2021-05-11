@@ -40,7 +40,8 @@ export default function PostPage() {
         }
         */
         
-        setTimeout(() => {fetchPost()},500);
+        //setTimeout(() => {fetchPost()},500);
+        fetchPost();
     },[idPost])
 
     return (
