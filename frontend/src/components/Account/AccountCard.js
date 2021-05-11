@@ -1,19 +1,19 @@
 import React, {useState} from 'react'
 import { useForm } from "react-hook-form"
-import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 export default function AccountCard({user,setUser,handleLogout}) {
 
     const [editMode, setEditMode] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { register, handleSubmit, formState: { errors }} = useForm();
     const [err, setErr] = useState(false);
-    const history = useHistory()
 
 
 
     const onSubmit = (data) => {
         const updateUser = async () =>{
+            setLoading(true);
             await axios.put(`/Users/${user?.id}`,data)
             .then(response => { 
                 setEditMode(false)
@@ -25,16 +25,13 @@ export default function AccountCard({user,setUser,handleLogout}) {
                     phoneNumber: data.phoneNumber
                 }
                 setUser(newUser)
-
             })
             .catch(error => {
-                console.log("Er");
-                if(error?.response?.status)
-                    setErr(error?.response?.status + " " + error?.response?.statusText)
-                else
-                    history.push("/account")
+                setErr(true)
             });
+            setLoading(false);
         }
+
         updateUser();
     }
     
@@ -42,7 +39,12 @@ export default function AccountCard({user,setUser,handleLogout}) {
             
         <div className="account-card">
             {editMode ? 
-            <>
+            <>{
+                loading &&
+                    <div className="loading-spiner-container">
+                        <i className="loading-spiner fas fa-spinner fa-pulse"></i>
+                    </div>
+              }    
                 <div>
                     <h3 className="account-item">
                         <span className="account-item account-icons">
@@ -91,6 +93,9 @@ export default function AccountCard({user,setUser,handleLogout}) {
                                 </label>
                                 <input type="text" id="email" name="email" defaultValue={user?.email} {...register("email", { required:"Emai required" })} />    
                                 {errors.email && <p>{errors.email.message}</p>}
+                                { err && 
+                                    <p>Email is already taken</p>    
+                                }
                             </div>
                             <div  className="detail">
                                 <label htmlFor="phone">
@@ -100,14 +105,9 @@ export default function AccountCard({user,setUser,handleLogout}) {
                             </div>
                         </div>
                     </form >
-                    {
-                        err && (
-                            <div className="err-response">{err}</div>
-                        )
-                    }
                     
                 </div>
-                
+            
             </> 
             :
             <>
