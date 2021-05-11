@@ -4,7 +4,8 @@ import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home'
 import PostsPage from './components/Posts/PostsPage'
 import PostPage from './components/Post/PostPage'
-import AddPost from './components/Account/AddPosts'
+import AddPost from './components/Account/AddPost'
+import EditPost from './components/Account/EditPost'
 import Signup from './components/Account/Signup'
 import Login from './components/Account/Login'
 import Account from './components/Account/Account'
@@ -23,6 +24,7 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route exact path="/posts" component={PostsPage} />
             <Route exact path="/posts/add" component={AddPost} />
+            <Route exact path="/posts/edit/:idPost" component={EditPost} />
             <Route exact path="/posts/:idPost" component={PostPage} />
             <PrivateRoute exact path="/account" component={Account} />
             <Route exact path="/register" component={Signup} />

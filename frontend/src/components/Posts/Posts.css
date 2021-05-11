@@ -31,7 +31,7 @@
 }
 
 .card-buttons{
-    padding: 1rem 2rem 1rem 1rem;
+    padding: 1rem;
     align-self: center;
     display: flex;
     flex-direction: column;

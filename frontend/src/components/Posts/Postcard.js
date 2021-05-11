@@ -1,13 +1,33 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, {useState} from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import axios from 'axios'
+
 
 export default function PostCard(props) {
 
-    const post = props.post;
+    const history = useHistory()
+    const [post, setPost] = useState(props.post);
+
+    function DeletePost(){
+        const deleteAsync = async () =>{
+            await axios.delete(`/Posts/${post.id}`)
+            .then(response => { 
+                console.log(response.data)
+                setPost(null)
+            })
+            .catch(error => {
+                console.log(error.data)
+            });
+        }
+
+        deleteAsync()
+    }
+
     if( !post )
         return(<></>)
     return (
-        <Link to={`/posts/${post?.id}`} className="card-LinkTo">
+        <div className="flex">
+        <Link to={`/posts/${post?.id}`} className="card-LinkTo" style={{flexGrow:1}}>
             <div className="card-container">
                 <div className="img-container">
                     <img src={post?.photosPaths?.split("<>")[0]} alt="PostImg"/>
@@ -23,14 +43,20 @@ export default function PostCard(props) {
                         <div className='card-price'>{post.price}{post.currency==="EUR" ? "€" : post.currency}</div>
                     </div>
                 </span> 
-                {props.editable &&
-                <div className="card-buttons">
-                    <i className="far fa-edit fa-2x"></i>
-                    <i className="far fa-trash-alt fa-2x"></i>
-                </div>
-                }
+                
                 
             </div>
         </Link>
+            {props.editable &&
+                <div className="card-buttons">
+                    <button className="icon-button" onClick={() => {history.push(`/posts/edit/${post.id}`)}}>
+                        <i className="far fa-edit fa-2x"></i>
+                    </button>
+                    <button className="icon-button" onClick={DeletePost}>
+                            <i className="far fa-trash-alt fa-2x"></i>
+                    </button>
+                </div>
+            }
+        </div>
     )
 }

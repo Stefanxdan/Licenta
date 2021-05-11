@@ -1,39 +1,19 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
+import { useParams } from 'react-router-dom'
 import { useForm } from "react-hook-form"
 import ReactMapGp, {Marker} from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
+
 import axios from 'axios'
 
+export default function EditPost() {
 
-
-export default function AddPosts() {
-
+    const { idPost } = useParams()
+    const [post, setPost] = useState();
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState();
     const { register, handleSubmit, formState: { errors }} = useForm();
     const history = useHistory()
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(false);
-
-    const onSubmit = (data) => {
-        data["Latitude"] = marker.latitude;
-        data["Longitude"] = marker.longitude;
-        data["MapRadius"] = 0;
-        console.log(data);
-
-        const addPost = async () =>{
-            setLoading(true);
-            await axios.post(`/Posts`,data)
-            .then(response => { 
-                console.log(response.data)
-                history.push("/account")
-            })
-            .catch(error => {
-                setErr(true)
-            });
-            setLoading(false);
-        }
-
-        addPost();
-    }
 
     const [viewport, setViewport] = useState({
         latitude: 47.157792,
@@ -51,13 +31,77 @@ export default function AddPosts() {
         setMarker({
           longitude: event.lngLat[0],
           latitude: event.lngLat[1],
-          photosPaths: ""
         });
       }, []);
 
+
+    useEffect(() => {
+        const fetchPost = async () =>{
+            setLoading(true);
+            await axios.get(`/Posts/${idPost}`)
+            .then(response => { 
+                setPost(response.data);
+            })
+            .catch(error => {
+                if(error?.response?.status)
+                    setErr(error?.response?.status + " " + error?.response?.statusText)
+                else
+                    setErr("ERR_CONNECTION_REFUSED")
+            });
+            setLoading(false);
+
+        }
+
+        fetchPost();
+    },[idPost])
+
+
+    useEffect(() => {
+        setMarker({
+            longitude: post?.longitude,
+            latitude: post?.latitude
+          })
+          setViewport({
+            longitude: post?.longitude,
+            latitude: post?.latitude,
+            width: "1100px",
+            height: "600px",
+            zoom: 14
+          })
+    }, [post?.longitude, post?.latitude])
+
+    const onSubmit = (data) => {
+        data["Latitude"] = marker.latitude;
+        data["Longitude"] = marker.longitude;
+        data["MapRadius"] = 0;
+        data["photosPaths"] = "";
+
+        const editPost = async () =>{
+            setLoading(true);
+            await axios.put(`/Posts/${post.id}`,data)
+            .then(response => { 
+                history.push(`/Posts/${post.id}`)
+            })
+            .catch(error => {
+                setErr(true)
+            });
+            setLoading(false);
+        }
+
+        editPost();
+    }
+
     return (
-        <div className="account-page">
-            <div className="account-page-inner">
+        <>
+            {loading ? (
+                <div className="loading-spiner-container">
+                    <i className="loading-spiner fas fa-spinner fa-pulse"></i>
+                </div>
+            ): err ? (
+               <div className="err-response">{err}</div>
+            ):
+            (
+                <div className="account-page-inner">
                 {loading ? (
                     <div className="loading-spiner-container">
                         <i className="loading-spiner fas fa-spinner fa-pulse"></i>
@@ -68,14 +112,14 @@ export default function AddPosts() {
                 }   
                 <div  className="addPost">
                     <div className="flex-wrap">
-                        <h3 className="account-icons">Add new post</h3>
+                        <h3 className="account-icons">Edit my post</h3>
                         <div className="green account-icons">
                             <button className="icon-button" form="addPostForm" type="submit">
                                 <i className="fas fa-check fa-2x" />
                             </button>
                         </div>
                         <div className="red account-icons">
-                            <button className="icon-button">
+                            <button className="icon-button" onClick={() => history.push("/account")}>
                                 <i className="fas fa-times fa-2x"></i>
                             </button>
                         </div>
@@ -86,7 +130,9 @@ export default function AddPosts() {
                             <label htmlFor="title">
                                 <strong>Title:</strong>
                             </label>
-                            <input type="text" id="title" name="title" {...register("title", { required:"Title required" })}/>
+                            <input type="text" id="title" name="title" defaultValue={post?.title}
+                                {...register("title", { required:"Title required" })}
+                            />
                             {errors.title && <p>{errors.title.message}</p>}
                         </div>
 
@@ -94,7 +140,9 @@ export default function AddPosts() {
                             <label htmlFor="description">
                                 <strong>Description:</strong>
                             </label>
-                            <textarea  rows="5"  type="text" id="description" name="description" {...register("description", { required:"Description required" })}/>
+                            <textarea  rows="5"  type="text" id="description" name="description" defaultValue={post?.description}
+                                {...register("description", { required:"Description required" })}
+                            />
                             {errors.description && <p>{errors.description.message}</p>}
                         </div>
 
@@ -103,9 +151,12 @@ export default function AddPosts() {
                                 <label htmlFor="price">
                                     <strong>Price:</strong>
                                 </label>
-                                <input type="number" id="price" name="price" {...register("price", { required:"Price required" })}/>
+                                <input type="number" id="price" name="price" defaultValue={post?.price}
+                                    {...register("price", { required:"Price required" })}
+                                />
                                 {errors.price && <p>{errors.price.message}</p>}
-                                <select  type="text" id="Currency" name="Currency" {...register("Currency", { required:"Currency required" })}>
+                                <select  type="text" id="Currency" name="Currency" defaultValue={post?.currency}
+                                     {...register("Currency", { required:"Currency required" })}>
                                     <option value="EUR">EUR</option>
                                     <option value="RON">RON</option>
                                 </select>
@@ -115,11 +166,11 @@ export default function AddPosts() {
                                 <label htmlFor="condition">
                                     <strong>Condition:</strong>
                                 </label>
-                                <select  type="text" id="condition" name="condition" {...register("condition", { required:"Condition required" })}>
+                                <select  type="text" id="condition" name="condition"  defaultValue={post?.condition}
+                                    {...register("condition", { required:"Condition required" })}>
                                     <option value="new">New</option>
                                     <option value="great">Great</option>
                                     <option value="good">Good</option>
-                                    <option value="fair">Fair</option>
                                     <option value="fair">Fair</option>
                                 </select>
                                 {errors.condition && <p>{errors.condition.message}</p>}
@@ -131,7 +182,8 @@ export default function AddPosts() {
                                 <label htmlFor="type">
                                     <strong>Type:</strong>
                                 </label>
-                                <select type="text" id="type" name="type" {...register("type", { required:"Type required" })}>
+                                <select type="text" id="type" name="type"   defaultValue={post?.type}
+                                    {...register("type", { required:"Type required" })}>
                                     <option value="apartament">apartament</option>
                                     <option value="house">house</option>
                                 </select>
@@ -141,7 +193,8 @@ export default function AddPosts() {
                                 <label htmlFor="partitioning">
                                     <strong>Partitioning:</strong>
                                 </label>
-                                <select type="text" id="partitioning" name="partitioning" {...register("partitioning", { required:"Partitioning required" })}>
+                                <select type="text" id="partitioning" name="partitioning"  defaultValue={post?.partitioning}
+                                     {...register("partitioning", { required:"Partitioning required" })}>
                                     <option value="decomandat">decomandat</option>
                                     <option value="semidecomandat">semidecomandat</option>
                                     <option value="nedecomandat">nedecomandat</option>
@@ -156,14 +209,16 @@ export default function AddPosts() {
                                 <label htmlFor="bedrooms">
                                     <strong>Bedrooms:</strong>
                                 </label>
-                                <input type="number" id="bedrooms" name="bedrooms" {...register("bedrooms", { required:"Bedrooms required" })} />
+                                <input type="number" id="bedrooms" name="bedrooms"  defaultValue={post?.bedrooms}
+                                     {...register("bedrooms", { required:"Bedrooms required" })} />
                                 {errors.bedrooms && <p>{errors.bedrooms.message}</p>}
                             </div>
                             <div className="detail flx-grow1">
                                 <label htmlFor="bathrooms">
                                     <strong>Bathrooms:</strong>
                                 </label>
-                                <input type="number" id="bathrooms" name="bathrooms" {...register("bathrooms", { required:"Bathrooms required" })} />
+                                <input type="number" id="bathrooms" name="bathrooms"  defaultValue={post?.bathrooms}
+                                     {...register("bathrooms", { required:"Bathrooms required" })} />
                                 {errors.bathrooms && <p>{errors.bathrooms.message}</p>}
                             </div>
                         </div>
@@ -173,14 +228,16 @@ export default function AddPosts() {
                                 <label htmlFor="SurfaceBuilt">
                                     <strong>Surface Built:</strong>
                                 </label>
-                                <input type="number" id="SurfaceBuilt" name="SurfaceBuilt" {...register("SurfaceBuilt", { required:"Surface Built required" })} />
+                                <input type="number" id="SurfaceBuilt" name="SurfaceBuilt"  defaultValue={post?.surfaceBuilt}
+                                     {...register("SurfaceBuilt", { required:"Surface Built required" })} />
                                 {errors.SurfaceBuilt && <p>{errors.SurfaceBuilt.message}</p>}
                             </div>
                             <div className="detail flx-grow1">
                                 <label htmlFor="SurfaceUseful">
                                     <strong>Surface Useful:</strong>
                                 </label>
-                                <input type="number" id="SurfaceUseful" name="SurfaceUseful" {...register("SurfaceUseful", { required:"Surface Useful required" })} />
+                                <input type="number" id="SurfaceUseful" name="SurfaceUseful"  defaultValue={post?.surfaceUseful}
+                                     {...register("SurfaceUseful", { required:"Surface Useful required" })} />
                                 {errors.SurfaceUseful && <p>{errors.SurfaceUseful.message}</p>}
                             </div>
                         </div>
@@ -190,20 +247,24 @@ export default function AddPosts() {
                                 <label htmlFor="BuildingYear">
                                     <strong>Building Year:</strong>
                                 </label>
-                                <input type="number" id="BuildingYear" name="BuildingYear" min="1900" max="2021" {...register("BuildingYear", { required:"Building Year required" })} />
+                                <input type="number" id="BuildingYear" name="BuildingYear" min="1900" max="2021"
+                                    defaultValue={post?.buildingYear}
+                                    {...register("BuildingYear", { required:"Building Year required" })} />
                                 {errors.BuildingYear && <p>{errors.BuildingYear.message}</p>}
                             </div>
                             <div className="detail flx-grow1">
                                 <label htmlFor="CityLabel">
                                     <strong>City Label:</strong>
                                 </label>
-                                <select type="number" id="CityLabel" name="CityLabel" {...register("CityLabel", { required:"City Label required" })}>
+                                <select type="number" id="CityLabel" name="CityLabel" defaultValue={post?.cityLabel}
+                                    {...register("CityLabel", { required:"City Label required" })}>
                                     <option value="Iasi (judet), Iasi">Iasi (judet), Iasi</option>
                                 </select>
                                 {errors.CityLabel && <p>{errors.CityLabel.message}</p>}
                             </div>
                         </div>
                     </form>
+                    <h4 style={{paddingTop:"2rem", paddingBottom:"1rem"}}>Edit location</h4>
                     <div className="post-map">
                         <ReactMapGp 
                             mapStyle="mapbox://styles/stefanxd99/cknkflk4o21zv17l4twtmered"
@@ -226,11 +287,12 @@ export default function AddPosts() {
 
                         </ReactMapGp>
                     </div>
-                    <div>
-                        Add
-                    </div>
+                    <h4 style={{paddingTop:"2rem", paddingBottom:"1rem"}}>Edit photos</h4>
+
                 </div>
             </div>
-        </div>
+            )
+            }
+        </>
     )
 }
