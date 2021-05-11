@@ -34,6 +34,15 @@
     padding: 10px;
 }
 
+.flex-wrap .account-item .detail label{
+    padding-right: 10px;
+}
+
+.flex-wrap .account-item .detail input{
+    padding: 5px;
+    border: solid rgba(0, 0, 0, 0.15) 1px;
+    border-radius: 10px;
+}
 
 .account-icons{
     margin: 1rem 1rem 0 1rem;
@@ -41,9 +50,30 @@
     align-self: center;
 }
 
+.account-icons .icon-button{
+    text-decoration: none;
+    border: none;
+    background: none;
+    color: currentColor;
+}
+
+
 .account-icons .fa-user-edit{
     margin: 0 1rem;
     color: rgba(73, 63, 255, 0.4);
+}
+.account-icons .fas{
+    margin: 0 0.5rem;
+}
+.account-icons .far{
+    margin: 0 0.5rem;
+}
+
+.red{
+    color:red;
+}
+.green{
+    color: green;
 }
  
 .account-icons .fa-sign-out-alt{

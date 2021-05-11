@@ -69,7 +69,7 @@ export default function Account() {
                <div className="err-response">{err}</div>
             ):
             <div className="account-page-inner">
-                <AccountCard user={user} handleLogout={handleLogout}/>
+                <AccountCard user={user} setUser={setUser} handleLogout={handleLogout}/>
                 <div className="flex-wrap" style={{justifyContent:' space-between'}}>
                     <MyPostsCard  myPostNumber={myPost?.length}/>
                     <FavPostsCard favPostNumber={myPost?.length}/>

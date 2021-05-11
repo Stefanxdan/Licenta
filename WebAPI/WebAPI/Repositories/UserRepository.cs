@@ -44,19 +44,20 @@ namespace WebAPI.Repositories
 
         public async Task<bool> Update(Guid id, User updatedUser)
         {
-            var unique = await _dataContext.Users.Where( u => u.Email == updatedUser.Email).FirstOrDefaultAsync();
+            var unique = await _dataContext.Users.Where( u => u.Email == updatedUser.Email && u.Id != id).FirstOrDefaultAsync();
+            
             if (unique != null)
-                return false;
+                    return false;
             var user = await GetById(id);
             if (user == null)
             {
                 return false;
             }
 
-            user.FirstName = updatedUser.FirstName;
-            user.LastName = updatedUser.LastName;
-            user.PhoneNumber = updatedUser.PhoneNumber;
-            user.Password = user.Password;
+            user.FirstName = updatedUser.FirstName ?? user.FirstName;
+            user.LastName = updatedUser.LastName ?? user.LastName;
+            user.PhoneNumber = updatedUser.PhoneNumber ?? user.PhoneNumber;
+            user.Email = updatedUser.Email ?? user.Email;
 
             _dataContext.Update(user);
             await _dataContext.SaveChangesAsync();

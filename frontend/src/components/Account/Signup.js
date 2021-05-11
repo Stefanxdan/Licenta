@@ -33,7 +33,7 @@ export default function Signup() {
             if( message === 400)
                 setError("Username or email taken")
             else
-                history.push("/")
+                history.push("/account")
         } catch {
             setError("Failed to create")
         }
