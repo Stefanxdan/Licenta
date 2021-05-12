@@ -6,6 +6,7 @@
 .account-page-inner{
     max-width: 1200px;
     margin: auto;
+    padding-bottom: 3rem;
 }
 
 .account-card{
@@ -182,8 +183,9 @@
 
 .add-photo img{
     max-height: 100px;
+    margin: 10px;
 }
-.add-photo img:hover{
+.add-photo img:last-of-type{
     cursor: pointer;
 }
 .add-photo input{

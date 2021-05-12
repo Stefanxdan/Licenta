@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import ReactMapGp, {Marker} from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import defaultImgSrc from '../../assets/empty-512.png'
+import defaultImgSrc from '../../assets/add-img.png'
 
 export default function AddPost() {
 
@@ -12,8 +12,8 @@ export default function AddPost() {
     const history = useHistory()
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(false);
-    const [inputFile, setInputFile] = useState(null)
-    const [imgSrc, setImgSrc] = useState(defaultImgSrc)
+    const [inputFiles, setInputFiles] = useState([])
+    const [previewImg, setPreviewImg] = useState([])
 
 
     const onSubmit = (data) => {
@@ -22,12 +22,11 @@ export default function AddPost() {
             data["Latitude"] = marker.latitude;
             data["Longitude"] = marker.longitude;
             data["MapRadius"] = 0;
-            data["PhotosNumber"] = 1;
+            data["PhotosNumber"] = previewImg.length;
             setLoading(true);
             await axios.post(`/Posts`,data)
             .then(response => { 
                 uploadPhoto(response.data.id)
-                console.log(response.data)
             })
             .catch(error => {
                 setErr(true)
@@ -37,13 +36,12 @@ export default function AddPost() {
         const uploadPhoto = async (postId) =>{
             
             const formData = new FormData()
-            formData.append('imageFile', inputFile)
+            Array.from(inputFiles).map((file) => formData.append('imageFile', file))
             formData.append('postId',postId)
 
             setLoading(true);
             await axios.post(`/UploadFiles`,formData)
             .then(response => { 
-                console.log(response.data)
                 history.push("/account")
             })
             .catch(error => {
@@ -74,19 +72,12 @@ export default function AddPost() {
         });
       }, []);
 
-    function fileInputHandler(event){
-        if( event.target.files && event.target.files[0]){    
-            const reader = new FileReader()
-            let imageFile = event.target.files[0]
-            reader.onload = x =>{
-                setInputFile(imageFile)
-                setImgSrc(x.target.result)
-            }
-            reader.readAsDataURL(imageFile)
-        }
-        else{
-            setInputFile(null)
-            setImgSrc(defaultImgSrc)
+
+    function filesInputHandler(e){
+        if(e.target.files){
+            const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file)).slice(0,10)
+            setPreviewImg(fileArray);
+            setInputFiles(e.target.files);
         }
     }
 
@@ -262,15 +253,19 @@ export default function AddPost() {
                         </ReactMapGp>
                     </div>
                                         
-                    <h4 style={{paddingTop:"2rem", paddingBottom:"1rem"}}>Add photos</h4>
+                    <h4 style={{paddingTop:"2rem", paddingBottom:"1rem"}}>Add photos (max 10)</h4>
                     <div className="add-photo">
-                        <img src={imgSrc} alt="postPhoto" onClick={() => fileInput.click()}/>
+                        {
+                            previewImg.map((photo) =>
+                                <img src={photo} key={photo} alt="postPhoto"/>
+                            )
+                        }
+                        <img src={defaultImgSrc} alt="postPhoto" onClick={() => fileInput.click()}/>
                         <input 
                             type="file" accept="image/*" multiple
                             id="photo" name="photo" 
-                            onChange={fileInputHandler}
+                            onChange={filesInputHandler}
                             ref={(input) => { fileInput = input} }/>
-                        <button onClick={() => console.log(inputFile)}>a</button>
                     </div>
                 </div>
             </div>
