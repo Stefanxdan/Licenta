@@ -179,3 +179,13 @@
 .addPost .price input{
     width: 70%;
 }
+
+.add-photo img{
+    max-height: 100px;
+}
+.add-photo img:hover{
+    cursor: pointer;
+}
+.add-photo input{
+    display: none;
+}

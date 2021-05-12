@@ -3,27 +3,47 @@ import { useForm } from "react-hook-form"
 import ReactMapGp, {Marker} from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-
-
+import defaultImgSrc from '../../assets/empty-512.png'
 
 export default function AddPost() {
 
+    let fileInput = null;
     const { register, handleSubmit, formState: { errors }} = useForm();
     const history = useHistory()
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(false);
+    const [inputFile, setInputFile] = useState(null)
+    const [imgSrc, setImgSrc] = useState(defaultImgSrc)
+
 
     const onSubmit = (data) => {
-        data["Latitude"] = marker.latitude;
-        data["Longitude"] = marker.longitude;
-        data["MapRadius"] = 0;
-        data["photosPaths"] = "";
-
 
         const addPost = async () =>{
+            data["Latitude"] = marker.latitude;
+            data["Longitude"] = marker.longitude;
+            data["MapRadius"] = 0;
+            data["PhotosNumber"] = 1;
             setLoading(true);
             await axios.post(`/Posts`,data)
             .then(response => { 
+                uploadPhoto(response.data.id)
+                console.log(response.data)
+            })
+            .catch(error => {
+                setErr(true)
+            });
+        }
+
+        const uploadPhoto = async (postId) =>{
+            
+            const formData = new FormData()
+            formData.append('imageFile', inputFile)
+            formData.append('postId',postId)
+
+            setLoading(true);
+            await axios.post(`/UploadFiles`,formData)
+            .then(response => { 
+                console.log(response.data)
                 history.push("/account")
             })
             .catch(error => {
@@ -53,6 +73,22 @@ export default function AddPost() {
           latitude: event.lngLat[1],
         });
       }, []);
+
+    function fileInputHandler(event){
+        if( event.target.files && event.target.files[0]){    
+            const reader = new FileReader()
+            let imageFile = event.target.files[0]
+            reader.onload = x =>{
+                setInputFile(imageFile)
+                setImgSrc(x.target.result)
+            }
+            reader.readAsDataURL(imageFile)
+        }
+        else{
+            setInputFile(null)
+            setImgSrc(defaultImgSrc)
+        }
+    }
 
     return (
         <div className="account-page">
@@ -225,8 +261,16 @@ export default function AddPost() {
 
                         </ReactMapGp>
                     </div>
+                                        
                     <h4 style={{paddingTop:"2rem", paddingBottom:"1rem"}}>Add photos</h4>
-                    <div>
+                    <div className="add-photo">
+                        <img src={imgSrc} alt="postPhoto" onClick={() => fileInput.click()}/>
+                        <input 
+                            type="file" accept="image/*" multiple
+                            id="photo" name="photo" 
+                            onChange={fileInputHandler}
+                            ref={(input) => { fileInput = input} }/>
+                        <button onClick={() => console.log(inputFile)}>a</button>
                     </div>
                 </div>
             </div>

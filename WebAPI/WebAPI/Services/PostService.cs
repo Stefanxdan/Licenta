@@ -67,8 +67,11 @@ namespace WebAPI.Services
             var post = _mapper.Map<Post>(request);
             post.IsLocal = true;
             post.IdUser = idUser;
+
+            post.PhotosPaths = $"{request.PhotosNumber}";
             return await _repository.Add(post);
         }
+        
 
         public async Task<bool> DeletePost(Guid id)
         {

@@ -30,7 +30,12 @@ export default function PostCard(props) {
         <Link to={`/posts/${post?.id}`} className="card-LinkTo" style={{flexGrow:1}}>
             <div className="card-container">
                 <div className="img-container">
-                    <img src={post?.photosPaths?.split("<>")[0]} alt="PostImg"/>
+                    {
+                        post?.isLocal ?
+                        <img src={`http://localhost:5000/Resources/Images/${post?.id}/1.png`} alt="PostImg"/>
+                        :
+                        <img src={post?.photosPaths?.split("<>")[0]} alt="PostImg"/>
+                    }
                 </div>
                 <span className="card-info-container">
                     <div className='card-title'>{post.title}</div>

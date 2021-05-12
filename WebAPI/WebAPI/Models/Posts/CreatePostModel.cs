@@ -1,4 +1,6 @@
-﻿namespace WebAPI.Models.Posts
+﻿using Microsoft.AspNetCore.Http;
+
+namespace WebAPI.Models.Posts
 {
     public class CreatePostModel
     {
@@ -8,9 +10,10 @@
         public string Description { get; set; }
         public int Price { get; set; }
         public string Currency { get; set; }
-        public string PhotosPaths { get; set; }
         public string CityLabel { get; set; }
-
+        
+        public int PhotosNumber { get; set; }
+        
         public float Latitude { get; set; }
         public float Longitude { get; set; }
         public int MapRadius { get; set; }

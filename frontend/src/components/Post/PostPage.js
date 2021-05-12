@@ -44,6 +44,18 @@ export default function PostPage() {
         fetchPost();
     },[idPost])
 
+    function localPhotosPath(photosNumber){
+        const n = Number.parseInt(photosNumber);
+
+        let paths = [];
+        for (let index = 0; index < n; index++) {
+            paths[index] = `http://localhost:5000/Resources/Images/${post.id}/${index+1}.png`
+            
+        }
+        console.log(paths.join("<>"))
+        return paths.join("<>")
+    }
+
     return (
         <>
             {loading ? (
@@ -57,7 +69,7 @@ export default function PostPage() {
                 <>
                     <div style={{backgroundColor:" #f2f4f5"}}>
                         <div  className="slider">
-                            <ImgSlider photosPaths={post.photosPaths} />
+                            <ImgSlider photosPaths={post.isLocal ? localPhotosPath(post.photosPaths) : post.photosPaths}/>
                         </div>
                     </div>
                     <PostInfo post={post}/>

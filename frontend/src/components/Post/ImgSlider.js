@@ -21,9 +21,11 @@ export default function ImgSlider({photosPaths}) {
         easing: "ease-out"
         };
     
+
+
     return (
         <Slide easing="ease" {...properties}>
-            {slideImages.map((photo, index) =>(
+            {slideImages?.map((photo, index) =>(
                 <div className="each-slide"  key={index}>
                     <div style={{'backgroundImage': `url(${photo})`}}>
                     </div>

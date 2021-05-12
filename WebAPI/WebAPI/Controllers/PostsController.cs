@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("You are not logged in");
             }
-            
+
             var postCreated = await _postService.AddPost(post, Guid.Parse(currentUser));
             
             return postCreated == null ? BadRequest() : Ok(postCreated);
