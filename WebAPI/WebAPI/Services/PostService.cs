@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -74,7 +75,11 @@ namespace WebAPI.Services
         
 
         public async Task<bool> DeletePost(Guid id)
-        {
+        {   
+            var folderName = Path.Combine("Resources", "Images", id.ToString());
+            var pathToDelete = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            Directory.Delete(pathToDelete, true);
+
             var status = await _repository.Remove(id);
             return status;  
         }
