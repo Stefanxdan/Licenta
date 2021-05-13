@@ -17,13 +17,13 @@ namespace WebAPI.Services
     {
         Task<Post> GetPostById(Guid id);
         Task<IEnumerable<Post>> GetPostsByUserId(Guid id);
-        Task<IEnumerable<Post>> GetPosts(PaginationQuery paginationQuery = null);
+        Task<IEnumerable<Post>> GetPosts(PostsFilters filters = null, PaginationQuery paginationQuery = null);
         Task<IEnumerable<CompactPostResponse>> GetAllPostsCompact();
         Task<Post> AddPost(CreatePostModel request, Guid idUser);
         Task<bool> DeletePost(Guid id);
         Task<bool> UpdatePost(Guid id, UpdatePostModel request);
         Task<bool> UserOwnsPost(Guid postId, Guid userId);
-        Task<int> GetTotalPostNumber();
+        int GetTotalPostNumber(PostsFilters filters = null);
         Task<int> RemoveMultiple();
         Task<bool> AddMultiple(IEnumerable<Post> posts);
     }
@@ -49,13 +49,41 @@ namespace WebAPI.Services
             return await _repository.GetAllAsQueryable().Where(post => post.IdUser==id).ToListAsync();
         }
 
-        public async Task<IEnumerable<Post>> GetPosts(PaginationQuery paginationQuery = null)
+        public async Task<IEnumerable<Post>> GetPosts(PostsFilters filters = null, PaginationQuery paginationQuery = null)
         {
+            var queryable = _repository.GetAllAsQueryable();
+            if(filters is {Filters: true})
+                queryable = AddFiltersOnQuery(filters, queryable);
             if (paginationQuery == null || paginationQuery.PageNumber < 1 || paginationQuery.PageSize < 1)
-                return await _repository.GetAllAsQueryable().Take(50).ToListAsync();
+                return await queryable.Take(50).ToListAsync();
 
             var skip = (paginationQuery.PageNumber - 1) * paginationQuery.PageSize;
-            return await _repository.GetAllAsQueryable().Skip(skip).Take(paginationQuery.PageSize).ToListAsync();
+            return await queryable.Skip(skip).Take(paginationQuery.PageSize).ToListAsync();
+        }
+
+        private static IQueryable<Post> AddFiltersOnQuery(PostsFilters filters, IQueryable<Post> queryable)
+        {
+            
+            if(filters.IsLocal != null)
+                queryable = queryable.Where(x => x.IsLocal == filters.IsLocal);
+            if(filters.ForRent != null)
+                queryable = queryable.Where(x => x.ForRent == filters.ForRent);
+            if(filters.PriceMin != null)
+                queryable = queryable.Where(x => x.Price >= filters.PriceMin);
+            if(filters.PriceMax != null)
+                queryable = queryable.Where(x => x.Price <= filters.PriceMax);
+            if(!string.IsNullOrEmpty(filters.CityLabel))
+                queryable = queryable.Where(x => x.CityLabel == filters.CityLabel);
+            if(filters.Bedrooms != null)
+                queryable = queryable.Where(x => x.Bedrooms == filters.Bedrooms);
+            if(filters.Bathrooms != null)
+                queryable = queryable.Where(x => x.Bathrooms == filters.Bathrooms);
+            if(!string.IsNullOrEmpty(filters.Type))
+                queryable = queryable.Where(x => x.Type == filters.Type);
+            if(!string.IsNullOrEmpty(filters.Partitioning))
+                queryable = queryable.Where(x => x.Partitioning == filters.Partitioning);
+
+            return queryable;
         }
 
         public async Task<IEnumerable<CompactPostResponse>> GetAllPostsCompact()
@@ -93,14 +121,15 @@ namespace WebAPI.Services
         public async Task<bool> UserOwnsPost(Guid postId, Guid userId)
         {
             var post = await GetPostById(postId);
-            if (post.IdUser == userId)
-                return true;
-            return false;
+            return post.IdUser == userId;
         }
 
-        public async Task<int> GetTotalPostNumber()
+        public  int GetTotalPostNumber(PostsFilters filters = null)
         {
-            return await _repository.GetTotalPostNumber();
+            var queryable = _repository.GetAllAsQueryable();
+            if(filters is {Filters: true}) 
+                queryable = AddFiltersOnQuery(filters, queryable);
+            return  queryable.Count();
         }
 
         public async Task<int> RemoveMultiple()

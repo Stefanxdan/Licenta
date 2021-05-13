@@ -62,10 +62,13 @@ namespace WebAPI.Controllers
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPosts([FromQuery] PaginationQuery paginationQuery)
+        public async Task<IActionResult> GetPosts([FromQuery] PostsFilters pf, [FromQuery] PaginationQuery paginationQuery)
         {
-            var posts = await _postService.GetPosts(paginationQuery);
-            var totalPostNumber = await _postService.GetTotalPostNumber();
+            var filters = new PostsFilters(HttpContext.Request.Query);
+            filters.Display();
+
+            var posts = await _postService.GetPosts(filters, paginationQuery);
+            var totalPostNumber =  _postService.GetTotalPostNumber(filters);
             var postsResponse = new PostsResponse(totalPostNumber, posts, HttpContext.Request.GetDisplayUrl(), paginationQuery);
             return Ok(postsResponse);
         }
