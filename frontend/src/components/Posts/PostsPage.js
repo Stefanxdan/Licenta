@@ -5,6 +5,20 @@ import Posts from './Posts'
 import Pagination from './Pagination'
 import './Posts.css'
 
+const initialFilters = {
+    Filters: true,
+    IsLocal: null,
+    ForRent: null,
+    PriceMin: null,
+    PriceMax: null,
+    CityLabel: null,
+    Bedrooms: null,
+    Bathrooms: null,
+    Type: null,
+    Partitioning: null
+}
+
+
 export default function PostsPage() {
 
     const [totalPostsNumber, settotalPostsNumber] = useState([]);
@@ -13,29 +27,18 @@ export default function PostsPage() {
     const [err, setErr] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(100);
+    const [filters, setFilters] = useState(initialFilters)
 
-    //initial Posts
-    /*
     useEffect(() => {
         const fetchPosts = async () =>{
-            setLoading(true);
-            const res = await axios.get('/Posts');
-            setPosts(res.data?.posts);
-            settotalPostsNumber(res.data?.totalPostsNumber)
-            setLoading(false);
-        }
-        
-        fetchPosts();
-    },[])
-    */
-    
-    useEffect(() => {
-        const fetchPosts = async () =>{
-            setLoading(true);
-            const params = {
+            const rawParams = {
                 PageNumber: currentPage,
                 PageSize: postsPerPage
             }
+            Object.assign(rawParams,filters)
+            const params = Object.fromEntries(Object.entries(rawParams)
+                .filter(([key, value]) => ![null, "", 0, 1000].includes(value)))
+            console.log(params)
             await axios.get('/Posts', {params})
             .then(response => { 
                 setPosts(response.data?.posts);
@@ -50,32 +53,36 @@ export default function PostsPage() {
             
             setLoading(false);
         }
-        
+        setLoading(true);
+        //setTimeout(() => {fetchPosts()},1000);
         fetchPosts();
-    },[currentPage, postsPerPage])
+    },[currentPage, postsPerPage, filters])
 
     // Change page
     const paginate = (pageNumber) => { setCurrentPage(pageNumber); } 
 
     return (
         <>
-            {loading ? (
-                <div className="loading-spiner-container">
-                    <i className="loading-spiner fas fa-spinner fa-pulse"></i>
-                </div>
-            ): err ? (
-               <div className="err-response">{err}</div>
-            ):(
-            <>
-                <div className="d-flex  justify-content-center" style={{maxWidth: "2000px", margin: "auto"}}>
-                    <div className="d-flex align-items-flex-start justify-content-center mt-5" >
-                        <Filters />
-                        <Posts posts={posts}/>
+            <div style={{maxWidth: "1600px", margin: "auto"}}>
+                <div className="postsPage-container" >
+                    <Filters filters={filters} setFilters={setFilters} totalPosts={totalPostsNumber}/>
+                    <div className="posts-container">
+                        {loading ? (
+                            <div className="loading-spiner-container-block">
+                                <i className="loading-spiner fas fa-spinner fa-pulse"></i>
+                            </div>
+                        ): err ? (
+                            <div className="err-response">{err}</div>
+                        ):(
+                            <Posts posts={posts}/>
+                        )}
                     </div>
                 </div>
-                <Pagination postPerPage={postsPerPage} totalPosts={totalPostsNumber} paginate={paginate} setPostsPerPage={setPostsPerPage}/>
-            </>
-            )}
+                <Pagination
+                    postPerPage={postsPerPage} totalPosts={totalPostsNumber} 
+                    paginate={paginate} setPostsPerPage={setPostsPerPage}/>
+            </div>
+            
         </>
     )
 }

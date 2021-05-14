@@ -14,3 +14,24 @@
     border-radius: 1rem;
     color: white;
 }
+
+.loading-spiner-container{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0; 
+    right: 0; 
+    margin: 100px auto;
+    font-size: 5rem;
+    width: 80px;
+    height: 80px;
+    color: #493ffc;
+}
+
+.loading-spiner-container-block{
+    font-size: 5rem;
+    width: min-content;
+    margin: auto;
+    color: #493ffc;
+    height: 100vh;
+}

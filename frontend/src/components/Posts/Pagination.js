@@ -22,7 +22,7 @@ export default function Pagination({postPerPage, totalPosts, paginate, setPostsP
                 </ul>
             </nav>
 
-            <div className="d-flex  justify-content-center">
+            <div className="d-flex  mb-5  justify-content-center">
                 <span className="pl-3 pr-2">Posts Number: {totalPosts}</span>
                 <span className="pl-2 pr-2">postPerPage: 
                     <input 

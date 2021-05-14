@@ -76,9 +76,21 @@
 }
 
 
-.filter-container{
-    width: 300px;
+.postsPage-container{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 5rem;
+}
+
+.filters-container{
+    flex-grow: 0;
+    flex-basis: 300px;
+    min-width: max-content;
     padding: 1rem;
     margin: 0 2rem;
     background-color: whitesmoke;
+}
+
+.posts-container{
+    flex-grow: 1;
 }

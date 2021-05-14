@@ -11,8 +11,9 @@ axios.defaults.baseURL = "http://localhost:5000/api"
 axios.defaults.headers.common['Authorization'] = "Bearer " +  JSON.parse(window.localStorage.getItem("currentUser"))?.token;
 
 ReactDOM.render(
-  <React.StrictMode>
+  //<React.StrictMode>
     <App />
-  </React.StrictMode>,
+  //</React.StrictMode>
+  ,
   document.getElementById('root') 
 );

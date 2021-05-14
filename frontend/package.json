@@ -12,14 +12,17 @@
     "bootstrap": "^4.6.0",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
+    "rc-slider": "^9.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
+    "react-dual-range-slider": "^1.0.4",
     "react-hook-form": "^7.5.2",
     "react-map-gl": "^6.1.12",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-slideshow-image": "^3.4.6",
+    "rn-range-slider": "^2.0.4",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -45,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.13.13"
   }
 }

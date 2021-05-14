@@ -64,8 +64,9 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPosts([FromQuery] PostsFilters pf, [FromQuery] PaginationQuery paginationQuery)
         {
+            Console.WriteLine(HttpContext.Request.QueryString);
             var filters = new PostsFilters(HttpContext.Request.Query);
-            filters.Display();
+            //filters.Display();
 
             var posts = await _postService.GetPosts(filters, paginationQuery);
             var totalPostNumber =  _postService.GetTotalPostNumber(filters);
