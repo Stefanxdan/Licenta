@@ -5,7 +5,7 @@ using WebAPI.Entities;
 
 namespace WebAPI.Repositories
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IRepository<T> where T : BaseEntity, new()
     {
         Task<T> GetById(Guid id);
         Task<IEnumerable<T>> GetAll();

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Facultate\\Licenta\\WebAPI\\WebAPICrawler\\WebAPICrawler.csproj": {}
+    "D:\\Facultate\\Licenta\\WebAPI\\ML\\ML.csproj": {}
   },
   "projects": {
-    "D:\\Facultate\\Licenta\\WebAPI\\WebAPICrawler\\WebAPICrawler.csproj": {
+    "D:\\Facultate\\Licenta\\WebAPI\\ML\\ML.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Facultate\\Licenta\\WebAPI\\WebAPICrawler\\WebAPICrawler.csproj",
-        "projectName": "WebAPICrawler",
-        "projectPath": "D:\\Facultate\\Licenta\\WebAPI\\WebAPICrawler\\WebAPICrawler.csproj",
+        "projectUniqueName": "D:\\Facultate\\Licenta\\WebAPI\\ML\\ML.csproj",
+        "projectName": "ML",
+        "projectPath": "D:\\Facultate\\Licenta\\WebAPI\\ML\\ML.csproj",
         "packagesPath": "C:\\Users\\stefa\\.nuget\\packages\\",
-        "outputPath": "D:\\Facultate\\Licenta\\WebAPI\\WebAPICrawler\\obj\\",
+        "outputPath": "D:\\Facultate\\Licenta\\WebAPI\\ML\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\stefa\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,20 +39,6 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "dependencies": {
-            "Microsoft.AspNet.WebApi.Client": {
-              "target": "Package",
-              "version": "[5.2.7, )"
-            },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.1, )"
-            },
-            "ObjectDumper": {
-              "target": "Package",
-              "version": "[1.0.0.12, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
