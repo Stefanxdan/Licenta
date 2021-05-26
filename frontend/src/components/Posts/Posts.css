@@ -82,6 +82,10 @@
     margin-top: 5rem;
 }
 
+.posts-container{
+    flex-grow: 1;
+}
+
 .filters-container{
     flex-grow: 0;
     flex-basis: 300px;
@@ -91,6 +95,33 @@
     background-color: whitesmoke;
 }
 
-.posts-container{
-    flex-grow: 1;
+.filters-container label{
+    padding-left: 10px;
 }
+
+.filters-container .flx-space-between{
+    display: flex;
+    justify-content: space-between;
+}
+
+.filters-container .div-select{
+    display: flex;
+}
+
+.filters-container select{
+    appearance: none;
+    border: none;
+    padding: 5px;
+    margin: 0 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
+    text-align-last:center; 
+}
+
+.filters-container select:focus{
+    outline: none;
+}
+
+
+

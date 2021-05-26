@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {Range} from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
@@ -6,6 +6,7 @@ export default function Filters({filters, setFilters, totalPosts}) {
 
     //const createSliderWithTooltip = Slider.createSliderWithTooltip;
     //const Range = createSliderWithTooltip(Slider.Range);
+    const [priceLabes, setpriceLabes] = useState([0,1000]);
 
     function handleEditFilters(e){
         const {name, value} = e.target
@@ -36,9 +37,15 @@ export default function Filters({filters, setFilters, totalPosts}) {
 
     }
 
+    function handlePriceLabel(e){
+        setpriceLabes(e)
+    }
+
     return (
         <div className="filters-container">
-            Filters ({totalPosts})
+            <div style={{textAlign:"center"}}>
+                <strong>Filters</strong> ({totalPosts})
+            </div>
             <div className="filters">
                 <br/>
                 <div>
@@ -83,16 +90,17 @@ export default function Filters({filters, setFilters, totalPosts}) {
                     <div>
                     Price:
                     </div>
-                    <span>
-                        {filters['PriceMin'] ?? 0}
-                    </span>
-                    <span>
-                        ==
-                    </span>
-                    <span>
-                        {filters['PriceMax'] ?? 1000}
-                    </span>
+                    <div className="flx-space-between">
+                        <span>
+                            {priceLabes[0]}
+                        </span>
+                        <span>
+                            {priceLabes[1]}
+                        </span>
+                    </div>
+
                     <Range onAfterChange={handlePriceEdit}
+                        onChange={handlePriceLabel}
                         min={0}
                         max={1000}
                         step={10}
@@ -100,47 +108,50 @@ export default function Filters({filters, setFilters, totalPosts}) {
                         />
                 </div>
                 <br/>
-                <div>
+                <div className="div-select">
+                    <span style={{paddingRight:"10px"}}>Cities</span>
                     <select id="CityLabel" name="CityLabel" onChange={handleEditFilters}>
-                        <option value=""> all cities </option>
+                        <option value=""> All </option>
                         <option value="">Iasi</option>
                     </select>
                 </div>
                 <br/>
-                <div>
+                <div className="div-select">
+                    <span style={{paddingRight:"10px"}}>Types</span>
                     <select id="Type" name="Type" onChange={handleEditFilters}>
-                        <option value=""> all types </option>
+                        <option value="">All</option>
                         <option value="apartament">apartament</option>
                         <option value="house">house</option>
                     </select>
                 </div>
                 <br/>
-                <div>
+                <div className="div-select">
+                    <span style={{paddingRight:"10px"}}>Bedrooms</span>
+                    <select id="Bedrooms" name="Bedrooms" onChange={handleEditFilters}>
+                        <option value=""> any </option>
+                        {Array.from({length: 10}, (_, i) => i + 1).map(number =>
+                            (<option key={number} value={number}>{number}</option>))}
+                    </select>
+                </div><br/>
+                <div className="div-select">
+                    <span style={{paddingRight:"10px"}}>Bathrooms</span>
+                    <select id="Bathrooms" name="Bathrooms" onChange={handleEditFilters}>
+                        <option value=""> any </option>
+                            {Array.from({length: 4}, (_, i) => i + 1).map(number =>
+                                (<option key={number} value={number}>{number}</option>))}
+                    </select>
+                </div>
+                <br />
+                <div className="div-select">
                     <select id="Partitioning" name="Partitioning" onChange={handleEditFilters}>
-                        <option value=""> all partitionings </option>
+                        <option value=""> Any partitioning </option>
                         <option value="decomandat">decomandat</option>
                         <option value="semidecomandat">semidecomandat</option>
                         <option value="nedecomandat">nedecomandat</option>
                         <option value="circular">circular</option>
                     </select>
                 </div>
-                <br/>
-                <div>
-                Bedrooms
-                    <select id="Bedrooms" name="Bedrooms" onChange={handleEditFilters}>
-                        <option value=""> number </option>
-                        {Array.from({length: 10}, (_, i) => i + 1).map(number =>
-                            (<option key={number} value={number}>{number}</option>))}
-                    </select>
-                </div><br/>
-                <div>
-                Bathrooms
-                    <select id="Bathrooms" name="Bathrooms" onChange={handleEditFilters}>
-                        <option value=""> number </option>
-                            {Array.from({length: 4}, (_, i) => i + 1).map(number =>
-                                (<option key={number} value={number}>{number}</option>))}
-                    </select>
-                </div>
+                
             </div>
         </div>
     )

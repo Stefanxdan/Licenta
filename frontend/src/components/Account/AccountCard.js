@@ -51,22 +51,10 @@ export default function AccountCard({user,setUser,handleLogout}) {
                             Edit your profile: <strong>{user?.username}</strong>
                         </span>
                         <span className="account-item account-icons">
-                            <div className="green">
-                                <i className="fas fa-check-circle fa-lg"></i>
-                                <i className="far fa-check-circle fa-lg"></i>
-                                <i className="fas fa-check-square fa-lg"></i>
-                                <i className="far fa-check-square fa-lg" />
-                                <button className="icon-button" form="updateUser" type="submit">
-                                    <i className="fas fa-check" />
-                                </button>
-                            </div>
-                            <div className="red">
-                                <i className="fas fa-times-circle fa-lg" onClick={() => setEditMode(false)}></i>
-                                <i className="far fa-times-circle fa-lg" onClick={() => setEditMode(false)}></i>
-                                <i className="fas fa-window-close fa-lg" onClick={() => setEditMode(false)}></i>
-                                <i className="far fa-window-close fa-lg" onClick={() => setEditMode(false)}></i>
-                                <i className="fas fa-times" onClick={() => setEditMode(false)}></i>
-                            </div>
+                            <button className="icon-button green" form="updateUser" type="submit">
+                                <i className="fas fa-check" />
+                            </button>
+                            <i className="fas fa-times red" onClick={() => setEditMode(false)}></i>
                         </span>
                     </h3>
                     <form id="updateUser" className="flex-wrap" onSubmit={handleSubmit(onSubmit)}>
