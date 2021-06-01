@@ -78,7 +78,7 @@ namespace WebAPICrawler.Models
                 }
                 catch
                 {
-                    Console.WriteLine(ad.id);
+                    Console.Write(ad.id + ",");
                 }
             }
 

@@ -24,7 +24,10 @@ namespace WebAPI.Entities
 
         [Column("City_label")]
         public string CityLabel { get; set; }
+        
+        [Column(TypeName = "float")]
         public float Latitude { get; set; }
+        [Column(TypeName = "float")]
         public float Longitude { get; set; }
         public int MapRadius { get; set; }
         

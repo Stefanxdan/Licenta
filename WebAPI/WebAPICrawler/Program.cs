@@ -29,9 +29,11 @@ namespace WebAPICrawler
                 var responseObj = JsonConvert.DeserializeObject<Rootobject>(result);
                 //Console.WriteLine(result);
                 //var responseObj = await response.Content.ReadAsAsync<Rootobject>();
-                Console.WriteLine("Number of posts receive: " + responseObj.ads.Length);
-                if (responseObj != null) 
+                Console.WriteLine("Number of posts receive: " + responseObj?.ads.Length);
+                if (responseObj != null)
+                {
                     return Mapper.CustomMap(responseObj.ads);
+                }
             }
             
             return null;
@@ -58,14 +60,14 @@ namespace WebAPICrawler
         static async Task RunAsync()
         {
             // Update port # in the following line.
-            storiaClient.BaseAddress = new Uri("https://www.storia.ro/i2/ads/results/?json=1&search%5Border%5D=filter_float_m%3Adesc&search%5Blocation_id%5D=.39939&search%5Bcity_id%5D=39939&limit=1500&search%5Bcategory_id%5D=102");
+            storiaClient.BaseAddress = new Uri("https://www.storia.ro/i2/ads/results/?json=1&search%5Border%5D=filter_float_m%3Adesc&search%5Blocation_id%5D=.39939&search%5Bcity_id%5D=39939&limit=2500&search%5Bcategory_id%5D=102");
             storiaClient.DefaultRequestHeaders.Accept.Clear();
             storiaClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
             
             //
             myApiClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ijg0NzY3ZTU1LWIxNWItNDA1OC0yYmRjLTA4ZDhmNWRjYjlkMSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTYxODgzOTY5NSwiZXhwIjoxNjE5NDQ0NDk1LCJpYXQiOjE2MTg4Mzk2OTV9.nmY5pCb8WiKN1cvx8rk1GlhazAh3nd01w_OYMoN3GOg");
+                new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ijg0NzY3ZTU1LWIxNWItNDA1OC0yYmRjLTA4ZDhmNWRjYjlkMSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTYyMjQ3MDUxMywiZXhwIjoxNjIzMDc1MzEzLCJpYXQiOjE2MjI0NzA1MTN9.s8IsSTuxpqiTf7kqfgVIIyhlUYXbscMcjPALCi1nR3w");
             
 
             try
