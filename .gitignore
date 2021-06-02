@@ -342,3 +342,4 @@ healthchecksdb
 # env from pycharm
 DataModeling/venv
 DataModeling/.idea
+*.cache
