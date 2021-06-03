@@ -9,6 +9,8 @@ namespace WebAPI.Data
         private readonly ILoggerFactory _loggerFactory = LoggerFactory.Create(config => config.AddConsole());
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<FavoritePost> FavoritePosts { get; set; }
+
         public DataContext(DbContextOptions options) : base(options)
         {
         }
@@ -27,7 +29,8 @@ namespace WebAPI.Data
             builder.Entity<User>().HasIndex(u => u.Email)
                 .IsUnique();
             
-            
+            builder.Entity<FavoritePost>()
+                .HasKey(t => new { t.PostId, t.UserId });
             
             builder.Entity<Post>()
                 .HasOne(p => p.User)
