@@ -80,6 +80,7 @@ namespace WebAPI
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IFavoritePostRepository, FavoritePostRepository>();
 
             services.AddSwaggerGen(c =>
             {

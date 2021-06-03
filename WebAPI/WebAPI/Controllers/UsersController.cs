@@ -97,8 +97,9 @@ namespace WebAPI.Controllers
             return NoContent();
         }
         
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(Guid id)
@@ -121,6 +122,28 @@ namespace WebAPI.Controllers
             }
 
             return NoContent();
+        }
+        
+        [HttpGet("favoritePosts/{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetFavoritePost(Guid id)
+        {
+            var currentUser = User.Identity?.Name ?? string.Empty;
+            if (currentUser == string.Empty)
+            {
+                return BadRequest("You are not logged in");
+            }
+                
+            var currentUserId = Guid.Parse(currentUser);
+            if (id != currentUserId && !User.IsInRole(Role.Admin))
+            {
+                return Forbid();
+            }
+            var fabPosts = await _userService.GetFavoritePosts(id);
+            
+            return Ok(fabPosts);
         }
     }
 }

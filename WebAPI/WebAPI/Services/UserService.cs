@@ -22,17 +22,20 @@ namespace WebAPI.Services
         Task<bool> DeleteUser(Guid id);
         Task<bool> UpdateUser(Guid id, UpdateUserModel request);
         Task<AuthenticationResponse> Authenticate(string username, string password);
+        Task<IEnumerable<Post>> GetFavoritePosts(Guid userId);
     }
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly IFavoritePostRepository _favoritePostRepository;
         private readonly AppSettings _appSettings;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IOptions<AppSettings> appSettings, IMapper mapper)
+        public UserService(IUserRepository repository, IOptions<AppSettings> appSettings, IMapper mapper, IFavoritePostRepository favoritePostRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _favoritePostRepository = favoritePostRepository;
             _appSettings = appSettings.Value;
         }
 
@@ -83,6 +86,11 @@ namespace WebAPI.Services
             var response = _mapper.Map<AuthenticationResponse>(user);
             response.Token = tokenHandler.WriteToken(token);
             return response;
+        }
+
+        public async Task<IEnumerable<Post>> GetFavoritePosts(Guid userId)
+        {
+            return await _favoritePostRepository.GetFavPostsByUserId(userId);
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
