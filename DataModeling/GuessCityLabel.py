@@ -1,4 +1,5 @@
 import csv
+import unidecode
 
 CityLabels = []
 
@@ -9,19 +10,23 @@ def GetCityLatLong():
     with open(inputFile, "r", encoding="utf8") as file:
         reader = csv.reader(file, delimiter=',')
         next(reader)
-        CityLabels.append({'city': 'Agronomie', 'lat': 47.1994400024414, 'long': 27.5425451914469})
+        CityLabels.append({'city': 'Agronomie', 'name': 'Agronomie', 'lat': 47.1994400024414, 'long': 27.5425451914469})
         for row in reader:
             city = row[0]
-            lat = float(row[1])
-            long = float(row[2])
-            CityLabels.append({'city': city, 'lat': lat, 'long': long})
+            name = row[1]
+            lat = float(row[2])
+            long = float(row[3])
+            CityLabels.append({'city': city, 'name': name, 'lat': lat, 'long': long})
 
 
 def FindCityLabel(text):
     lowerText = text.lower()
     for city in CityLabels:
-        if city['city'].lower() in lowerText:
+        if city['name'].lower() in lowerText:
             return city
+        elif unidecode.unidecode(city['name'].lower()) in unidecode.unidecode(lowerText):
+            return city
+
     return 0
 
 
