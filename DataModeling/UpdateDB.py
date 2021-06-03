@@ -15,7 +15,8 @@ with open(file, "r") as file:
     reader = csv.reader(file, delimiter=',')
     header = next(reader)
     for row in reader:
-        cursor.execute("update [WebApiDb].[dbo].[Posts] set City_label='" + row[1] + "' where Id='" + row[0] + "'")
+        #cursor.execute("update [WebApiDb].[dbo].[Posts] set City_label='" + row[1] + "' where Id='" + row[0] + "'")
+        cursor.execute("update [WebApiDb].[dbo].[Posts] set City_label='" + row[1] + "', Latitude=" + row[2] + " , Longitude=" + row[3] + ", MapRadius=1  where Id='" + row[0] + "'")
     print(reader.line_num, "line was computed")
 
 conn.commit()
