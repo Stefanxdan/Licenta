@@ -6,6 +6,8 @@ import { useHistory } from 'react-router-dom'
 
 import axios from 'axios'
 
+const neighborhoods = ["Agronomie","Alexandru cel bun", "Aviatiei", "Bucium", "Bularga / Baza 3", "Canta", "Cantemir", "Centru", "Copou", "CUG", "Dacia", "Frumoasa / Manta Rosie", "Galata", "Gara", "Mircea cel Batran", "Moara de Vant", "Nicolina", "Pacurari", "Podu Ros", "Tatarasi Nord", "Tatarasi Sud", "Tesatura", "Tudor Vladimirescu", "Uzinei", "Valea Adanca", "Valea Lupului", "Zona Industriala"]
+
 export default function EditPost() {
 
     const { idPost } = useParams()
@@ -256,9 +258,15 @@ export default function EditPost() {
                                 <label htmlFor="CityLabel">
                                     <strong>City Label:</strong>
                                 </label>
-                                <select type="number" id="CityLabel" name="CityLabel" defaultValue={post?.cityLabel}
+                                <select id="CityLabel" name="CityLabel" defaultValue={post?.cityLabel}
                                     {...register("CityLabel", { required:"City Label required" })}>
                                     <option value="Iasi (judet), Iasi">Iasi (judet), Iasi</option>
+                                    {
+                                        neighborhoods.map(n =>
+                                            (
+                                                <option value={n} key={n}>{n}</option>   
+                                            ))
+                                    }
                                 </select>
                                 {errors.CityLabel && <p>{errors.CityLabel.message}</p>}
                             </div>
@@ -287,7 +295,6 @@ export default function EditPost() {
 
                         </ReactMapGp>
                     </div>
-                    <h4 style={{paddingTop:"2rem", paddingBottom:"1rem"}}>Edit photos</h4>
 
                 </div>
             </div>

@@ -52,11 +52,13 @@ export default function PostCard(props) {
                 
             </div>
         </Link>
-            {props.editable &&
+            {props.deletable &&
                 <div className="card-buttons">
-                    <button className="icon-button" onClick={() => {history.push(`/posts/edit/${post.id}`)}}>
-                        <i className="far fa-edit fa-2x"></i>
-                    </button>
+                    {props.editable &&
+                        <button className="icon-button" onClick={() => {history.push(`/posts/edit/${post.id}`)}}>
+                            <i className="far fa-edit fa-2x"></i>
+                        </button>
+                    }
                     <button className="icon-button" onClick={DeletePost}>
                             <i className="far fa-trash-alt fa-2x"></i>
                     </button>

@@ -52,7 +52,6 @@ export default function PostPage() {
             paths[index] = `http://localhost:5000/Resources/Images/${post.id}/${index+1}.png`
             
         }
-        console.log(paths.join("<>"))
         return paths.join("<>")
     }
 

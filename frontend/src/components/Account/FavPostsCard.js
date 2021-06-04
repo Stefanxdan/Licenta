@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default function FavPostsCard({favPostNumber}) {
+export default function FavPostsCard({favPostNumber,fct}) {
     return (
-        <div className="acc-posts-card">
+        <div className="acc-posts-card" onClick={fct}>
             <h4><strong>Favorites Posts</strong></h4>
             <div className="apc-txt">Private. Only for your eyes</div>
             <div className="apc-flex">

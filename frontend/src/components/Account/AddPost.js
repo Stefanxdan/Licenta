@@ -5,6 +5,9 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import defaultImgSrc from '../../assets/add-img.png'
 
+const neighborhoods = ["Agronomie","Alexandru cel bun", "Aviatiei", "Bucium", "Bularga / Baza 3", "Canta", "Cantemir", "Centru", "Copou", "CUG", "Dacia", "Frumoasa / Manta Rosie", "Galata", "Gara", "Mircea cel Batran", "Moara de Vant", "Nicolina", "Pacurari", "Podu Ros", "Tatarasi Nord", "Tatarasi Sud", "Tesatura", "Tudor Vladimirescu", "Uzinei", "Valea Adanca", "Valea Lupului", "Zona Industriala"]
+
+
 export default function AddPost() {
 
     let fileInput = null;
@@ -23,6 +26,7 @@ export default function AddPost() {
             data["Longitude"] = marker.longitude;
             data["MapRadius"] = 0;
             data["PhotosNumber"] = previewImg.length;
+            console.log(data)
             setLoading(true);
             await axios.post(`/Posts`,data)
             .then(response => { 
@@ -49,6 +53,7 @@ export default function AddPost() {
             });
             setLoading(false);
         }
+
 
         addPost();
     }
@@ -222,8 +227,14 @@ export default function AddPost() {
                                 <label htmlFor="CityLabel">
                                     <strong>City Label:</strong>
                                 </label>
-                                <select type="number" id="CityLabel" name="CityLabel" {...register("CityLabel", { required:"City Label required" })}>
+                                <select id="CityLabel" name="CityLabel" {...register("CityLabel", { required:"City Label required" })}>
                                     <option value="Iasi (judet), Iasi">Iasi (judet), Iasi</option>
+                                    {
+                                        neighborhoods.map(n =>
+                                            (
+                                                <option value={n} key={n}>{n}</option>   
+                                            ))
+                                    }
                                 </select>
                                 {errors.CityLabel && <p>{errors.CityLabel.message}</p>}
                             </div>
