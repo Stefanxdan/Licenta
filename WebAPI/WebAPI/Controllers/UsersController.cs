@@ -124,11 +124,11 @@ namespace WebAPI.Controllers
             return NoContent();
         }
         
-        [HttpGet("favoritePosts/{id:guid}")]
+        [HttpGet("favoritePosts")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> GetFavoritePost(Guid id)
+        public async Task<IActionResult> GetFavoritePost([FromQuery]Guid id)
         {
             var currentUser = User.Identity?.Name ?? string.Empty;
             if (currentUser == string.Empty)
@@ -137,6 +137,8 @@ namespace WebAPI.Controllers
             }
                 
             var currentUserId = Guid.Parse(currentUser);
+            if (id == Guid.Empty)
+                id = currentUserId;
             if (id != currentUserId && !User.IsInRole(Role.Admin))
             {
                 return Forbid();
@@ -144,6 +146,49 @@ namespace WebAPI.Controllers
             var fabPosts = await _userService.GetFavoritePosts(id);
             
             return Ok(fabPosts);
+        }
+        
+        [HttpPost("favoritePosts")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddFavoritePost(Guid postId)
+        {
+            var currentUser = User.Identity?.Name ?? string.Empty;
+            if (postId == Guid.Empty)
+                return BadRequest("Bad input");
+            if (currentUser == string.Empty)
+            {
+                return BadRequest("You are not logged in");
+            }
+                
+            var currentUserId = Guid.Parse(currentUser);
+
+            var response = await _userService.AddFavoritePost(currentUserId, postId);
+            return response == null ? BadRequest("Already added") : Ok(response);
+        }
+        
+        [HttpDelete("favoritePosts/{postId:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteFavoritePosts(Guid postId)
+        {
+            var currentUser = User.Identity?.Name ?? string.Empty;
+            if (currentUser == string.Empty)
+            {
+                return BadRequest("You are not logged in");
+            }
+                
+            var currentUserId = Guid.Parse(currentUser);
+            
+            var response = await _userService.DeleteFavoritePost(currentUserId, postId);
+            if (!response)
+            {
+                return NotFound(postId);
+            }
+
+            return NoContent();
         }
     }
 }

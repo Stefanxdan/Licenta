@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace WebAPI.Services
         Task<bool> UpdateUser(Guid id, UpdateUserModel request);
         Task<AuthenticationResponse> Authenticate(string username, string password);
         Task<IEnumerable<Post>> GetFavoritePosts(Guid userId);
+        Task<FavoritePost> AddFavoritePost(Guid userId, Guid postId);
+        Task<bool> DeleteFavoritePost(Guid userId, Guid postId);
     }
     public class UserService : IUserService
     {
@@ -91,6 +94,21 @@ namespace WebAPI.Services
         public async Task<IEnumerable<Post>> GetFavoritePosts(Guid userId)
         {
             return await _favoritePostRepository.GetFavPostsByUserId(userId);
+        }
+
+        public async Task<FavoritePost> AddFavoritePost(Guid userId, Guid postId)
+        {
+            var favPosts = await GetFavoritePosts(userId);
+            if(favPosts.FirstOrDefault(post => post.Id == postId) != null)
+                return null;
+            var favPost = new FavoritePost(userId, postId);
+            return await _favoritePostRepository.Add(favPost);;
+        }
+
+        public async Task<bool> DeleteFavoritePost(Guid userId, Guid postId)
+        {
+            var status = await _favoritePostRepository.Remove(userId, postId);
+            return status;      
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()

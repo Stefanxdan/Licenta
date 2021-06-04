@@ -96,7 +96,7 @@ export default function Account() {
                 <AccountCard user={user} setUser={setUser} handleLogout={handleLogout}/>
                 <div className="flex-wrap" style={{justifyContent:' space-between'}}>
                     <MyPostsCard  myPostNumber={myPost?.length} fct={()=> setDisplayPosts(true)}/>
-                    <FavPostsCard favPostNumber={favPost?.length} fct={()=> setDisplayPosts(false)}/>
+                    <FavPostsCard favPostNumber={favPost?.length} fct={()=> setDisplayPosts (false)}/>
                 </div>
                     <Posts posts={myPost} editable={true} deletable={true} notDisplay={!displayPosts}/>
                     <Posts posts={favPost} editable={false} deletable={true} notDisplay={displayPosts}/>
