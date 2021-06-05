@@ -25,6 +25,7 @@ export default function AddPost() {
             data["Latitude"] = marker.latitude;
             data["Longitude"] = marker.longitude;
             data["MapRadius"] = 0;
+            data["ForRent"] = 1;
             data["PhotosNumber"] = previewImg.length;
             console.log(data)
             setLoading(true);

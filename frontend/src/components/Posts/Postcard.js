@@ -10,10 +10,17 @@ export default function PostCard(props) {
 
     function DeletePost(){
         const deleteAsync = async () =>{
-            await axios.delete(`/Posts/${post.id}`)
+            let path =""
+            if( props.editable)
+                path = `/Posts/${post.id}`
+            else
+            path = `/Users/favoritePosts/${post.id}`
+
+            await axios.delete(path)
             .then(response => { 
                 console.log(response.data)
                 setPost(null)
+                window.location.reload();
             })
             .catch(error => {
                 console.log(error.data)
@@ -21,6 +28,7 @@ export default function PostCard(props) {
         }
 
         deleteAsync()
+
     }
 
     if( !post )

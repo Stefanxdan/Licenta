@@ -36,7 +36,7 @@
 
 .post-info .post-header .post-price{
     color: white;
-    margin-right: 3rem;
+    margin-right: 1rem;
     background-color: #493ffc;
     border-radius: 1rem;
     padding: 0.6rem;
@@ -98,4 +98,10 @@
 }
 .post-owner .post-owner-info h4{
     text-align: center;
+}
+
+.fav-btn{
+    font-size: 3rem;
+    margin-right: 2rem;
+    color: red;
 }

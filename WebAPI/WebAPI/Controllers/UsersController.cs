@@ -148,7 +148,7 @@ namespace WebAPI.Controllers
             return Ok(fabPosts);
         }
         
-        [HttpPost("favoritePosts")]
+        [HttpPost("favoritePosts/{postId:guid}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddFavoritePost(Guid postId)

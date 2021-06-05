@@ -8,7 +8,7 @@ export default function Posts(props) {
         <>
             {props.notDisplay ? null
             : props.posts?.map((post,index) =>(
-                <PostCard post={post} editable={props.editable} deletable={props.deletable} key={index} />   
+                <PostCard posts={props.posts} post={post} editable={props.editable} deletable={props.deletable} key={index} />   
             ))
         }
         </>

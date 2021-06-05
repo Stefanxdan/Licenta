@@ -55,7 +55,7 @@ export default function Account() {
         
         const fetchFavPosts = async () =>{
             setLoading3(true);
-            await axios.get(`/Users/favoritePosts/${currentUser?.id}`)
+            await axios.get(`/Users/favoritePosts`)
             .then(response => { 
                 setFavPost(response.data);
                 console.log(response.data)
