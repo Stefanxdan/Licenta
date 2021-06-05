@@ -41,7 +41,6 @@ export default function FavButton({postId}) {
                 setisFav(true)
         })
         .catch(error => {});
-        
     }
 
     const SetFavButtonHandle = () =>{
