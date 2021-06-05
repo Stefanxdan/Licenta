@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 import Filters from './Filters'
@@ -22,6 +23,8 @@ const initialFilters = {
 
 export default function PostsPage() {
 
+    const { idUser } = useParams()
+    const [user, setUser] = useState(null)
     const [totalPostsNumber, settotalPostsNumber] = useState([]);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -36,10 +39,12 @@ export default function PostsPage() {
                 PageNumber: currentPage,
                 PageSize: postsPerPage
             }
+            if(idUser)
+            Object.assign(rawParams,{IdUser: idUser})
             Object.assign(rawParams,filters)
             const params = Object.fromEntries(Object.entries(rawParams)
                 .filter(([key, value]) => ![null, "", 0, 1000].includes(value)))
-            console.log(params)
+            //console.log(params)
             await axios.get('/Posts', {params})
             .then(response => { 
                 setPosts(response.data?.posts);
@@ -54,10 +59,21 @@ export default function PostsPage() {
             
             setLoading(false);
         }
+
+        const fetchUser = async () =>{
+            await axios.get(`/Users/${idUser}`)
+            .then(response => {
+                setUser(response.data)
+            })
+            .catch(error => {});
+        } 
+
         setLoading(true);
         //setTimeout(() => {fetchPosts()},1000);
+        if(idUser) 
+            fetchUser();
         fetchPosts();
-    },[currentPage, postsPerPage, filters])
+    },[currentPage, postsPerPage, filters,idUser])
 
     // Change page
     const paginate = (pageNumber) => { setCurrentPage(pageNumber); } 
@@ -65,6 +81,12 @@ export default function PostsPage() {
     return (
         <>
             <div style={{maxWidth: "1600px", margin: "auto"}}>
+                <div className="title-user-posts">
+                    {
+                        user &&
+                        <>Posts from {user?.role === "Provider" ? "provider" : "user"}: {user.username}</>
+                    } 
+                </div>
                 <div className="postsPage-container" >
                     <Filters filters={filters} setFilters={setFilters} totalPosts={totalPostsNumber}/>
                     <div className="posts-container">

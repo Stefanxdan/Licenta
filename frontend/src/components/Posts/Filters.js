@@ -1,6 +1,8 @@
 import React,{useState} from 'react'
 import {Range} from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import {cities} from "../../assets/CitiesArray"
+
 
 export default function Filters({filters, setFilters, totalPosts}) {
 
@@ -109,10 +111,10 @@ export default function Filters({filters, setFilters, totalPosts}) {
                 </div>
                 <br/>
                 <div className="div-select">
-                    <span style={{paddingRight:"10px"}}>Cities</span>
+                    <span style={{paddingRight:"10px"}}>Neighborhood</span>
                     <select id="CityLabel" name="CityLabel" onChange={handleEditFilters}>
                         <option value=""> All </option>
-                        <option value="">Iasi</option>
+                            {cities.map(city => (<option key={city} value={city}>{city}</option>))}
                     </select>
                 </div>
                 <br/>

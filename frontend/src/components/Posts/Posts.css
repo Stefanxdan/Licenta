@@ -79,7 +79,7 @@
 .postsPage-container{
     display: flex;
     align-items: flex-start;
-    margin-top: 5rem;
+    margin-top: 1rem;
 }
 
 .posts-container{
@@ -123,5 +123,10 @@
     outline: none;
 }
 
+.title-user-posts{
+    font-size: 2rem;
+    padding: 2rem;
+    padding-left: 3rem;
+}
 
 

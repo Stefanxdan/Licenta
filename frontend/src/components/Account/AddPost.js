@@ -4,8 +4,7 @@ import ReactMapGp, {Marker} from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import defaultImgSrc from '../../assets/add-img.png'
-
-const neighborhoods = ["Agronomie","Alexandru cel bun", "Aviatiei", "Bucium", "Bularga / Baza 3", "Canta", "Cantemir", "Centru", "Copou", "CUG", "Dacia", "Frumoasa / Manta Rosie", "Galata", "Gara", "Mircea cel Batran", "Moara de Vant", "Nicolina", "Pacurari", "Podu Ros", "Tatarasi Nord", "Tatarasi Sud", "Tesatura", "Tudor Vladimirescu", "Uzinei", "Valea Adanca", "Valea Lupului", "Zona Industriala"]
+import {cities} from "../../assets/CitiesArray"
 
 
 export default function AddPost() {
@@ -231,7 +230,7 @@ export default function AddPost() {
                                 <select id="CityLabel" name="CityLabel" {...register("CityLabel", { required:"City Label required" })}>
                                     <option value="Iasi (judet), Iasi">Iasi (judet), Iasi</option>
                                     {
-                                        neighborhoods.map(n =>
+                                        cities.map(n =>
                                             (
                                                 <option value={n} key={n}>{n}</option>   
                                             ))

@@ -63,7 +63,8 @@ namespace WebAPI.Services
 
         private static IQueryable<Post> AddFiltersOnQuery(PostsFilters filters, IQueryable<Post> queryable)
         {
-            
+            if(filters.IdUser != null)
+                queryable = queryable.Where(x => x.IdUser == filters.IdUser);
             if(filters.IsLocal != null)
                 queryable = queryable.Where(x => x.IsLocal == filters.IsLocal);
             if(filters.ForRent != null)

@@ -10,6 +10,7 @@ namespace WebAPI.Models.Queries
         public void Display()
         {
             Console.WriteLine("Filters: " + Filters);
+            Console.WriteLine("IdUser: " + IdUser);
             Console.WriteLine("IsLocal: " + IsLocal);
             Console.WriteLine("ForRent: " + ForRent);
             Console.WriteLine("Bathrooms: " + Bathrooms);
@@ -31,7 +32,10 @@ namespace WebAPI.Models.Queries
             Filters = !string.IsNullOrEmpty(stringBool) && bool.Parse(stringBool); 
             
             stringBool = query["IsLocal"].ToString() ;
-            IsLocal = !string.IsNullOrEmpty(stringBool) ? bool.Parse(stringBool) : null; 
+            IsLocal = !string.IsNullOrEmpty(stringBool) ? bool.Parse(stringBool) : null;
+
+            stringBool = query["IdUser"].ToString();
+            IdUser = !string.IsNullOrEmpty(stringBool) ? Guid.Parse(stringBool) :null ;
             
             stringBool = query["ForRent"].ToString() ;
             ForRent = !string.IsNullOrEmpty(stringBool) ? bool.Parse(stringBool) : null; 
@@ -55,7 +59,7 @@ namespace WebAPI.Models.Queries
             
         }
         
-        public PostsFilters(bool filters, bool isLocal, bool forRent, int priceMin, int priceMax, string cityLabel, int bedrooms, int bathrooms, string type, string partitioning)
+        public PostsFilters(bool filters, bool isLocal, bool forRent, int priceMin, int priceMax, string cityLabel, int bedrooms, int bathrooms, string type, string partitioning, Guid idUser)
         {
             Console.WriteLine("Second Constructor");
             Filters = filters;
@@ -68,8 +72,10 @@ namespace WebAPI.Models.Queries
             Bathrooms = bathrooms;
             Type = type;
             Partitioning = partitioning;
+            IdUser = idUser;
         }
             
+        public Guid? IdUser { get; set; }
         public bool Filters { get; set; }
         public bool? IsLocal { get; set; } 
         public bool? ForRent { get; set; }

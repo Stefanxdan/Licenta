@@ -91,13 +91,22 @@
     height: 200px;
     width: 200px;
 }
+.post-owner i{
+    font-size: 5rem;
+    background-color: white;
+    border-radius: 50%;
+    padding: 2rem;
+}
+
 
 .post-owner .post-owner-info{
     padding: 1rem;
+    padding-bottom: 2rem;
     width: 100%;
 }
 .post-owner .post-owner-info h4{
-    text-align: center;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 .fav-btn{

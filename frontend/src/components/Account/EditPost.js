@@ -3,10 +3,9 @@ import { useParams } from 'react-router-dom'
 import { useForm } from "react-hook-form"
 import ReactMapGp, {Marker} from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
+import {cities} from "../../assets/CitiesArray"
 
 import axios from 'axios'
-
-const neighborhoods = ["Agronomie","Alexandru cel bun", "Aviatiei", "Bucium", "Bularga / Baza 3", "Canta", "Cantemir", "Centru", "Copou", "CUG", "Dacia", "Frumoasa / Manta Rosie", "Galata", "Gara", "Mircea cel Batran", "Moara de Vant", "Nicolina", "Pacurari", "Podu Ros", "Tatarasi Nord", "Tatarasi Sud", "Tesatura", "Tudor Vladimirescu", "Uzinei", "Valea Adanca", "Valea Lupului", "Zona Industriala"]
 
 export default function EditPost() {
 
@@ -262,7 +261,7 @@ export default function EditPost() {
                                     {...register("CityLabel", { required:"City Label required" })}>
                                     <option value="Iasi (judet), Iasi">Iasi (judet), Iasi</option>
                                     {
-                                        neighborhoods.map(n =>
+                                        cities.map(n =>
                                             (
                                                 <option value={n} key={n}>{n}</option>   
                                             ))
