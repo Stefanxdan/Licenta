@@ -9,6 +9,7 @@ import EditPost from './components/Account/EditPost'
 import Signup from './components/Account/Signup'
 import Login from './components/Account/Login'
 import Account from './components/Account/Account'
+import AdminPage from './components/Admin/AdminPage'
 import Map from './components/Map/Map'
 import PrivateRoute from './components/PrivateRoute'
 import { AuthProvider } from './contexts/authcontext';
@@ -32,6 +33,7 @@ function App() {
             <Route exact path="/register" component={Signup} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/account" component={Account} />
+            <PrivateRoute exact path="/admin" component={AdminPage} />
             
           </Switch>
         </div>

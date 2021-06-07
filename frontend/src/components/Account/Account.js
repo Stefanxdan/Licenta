@@ -26,8 +26,9 @@ export default function Account() {
         const fetchUser = async () =>{
             setLoading(true);
             await axios.get(`/Users/${currentUser?.id}`)
-            .then(response => { 
+            .then(response => {
                 setUser(response.data);
+
             })
             .catch(error => {
                 if(error?.response?.status)
@@ -58,7 +59,6 @@ export default function Account() {
             await axios.get(`/Users/favoritePosts`)
             .then(response => { 
                 setFavPost(response.data);
-                console.log(response.data)
             })
             .catch(error => {
                 if(error?.response?.status)
@@ -72,10 +72,12 @@ export default function Account() {
 
         //setTimeout(() => {fetchUser()},500);
         //setTimeout(() => {fetchPosts()},500);
+        if(currentUser?.role === "Admin")
+            history.push('/admin') 
         fetchUser();
         fetchPosts();
         fetchFavPosts();
-    }, [currentUser?.id])
+    }, [currentUser?.id, currentUser?.role, history])
 
     function handleLogout(){
         setErr("")
