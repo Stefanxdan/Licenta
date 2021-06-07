@@ -102,8 +102,6 @@ namespace WebAPI.Controllers
             var user = await _userService.GetUserById(userId);
             if (user == null)
                 return NotFound();
-            if (user.Role != "User")
-                return Forbid();
             var posts = await _postService.GetPostsByUserId(userId);
             if (posts == null)
                 return NotFound();

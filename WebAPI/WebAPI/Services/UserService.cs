@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Entities;
 using WebAPI.Helpers;
 using WebAPI.Models.Users;
@@ -18,7 +19,7 @@ namespace WebAPI.Services
     public interface IUserService
     {
         Task<User> GetUserById(Guid id);
-        Task<IEnumerable<User>> GetAllUsers();
+        Task<IEnumerable<UserPostNumberResponse>> GetAllUsers();
         Task<User> AddUser(RegisterModel request);
         Task<bool> DeleteUser(Guid id);
         Task<bool> UpdateUser(Guid id, UpdateUserModel request);
@@ -30,15 +31,17 @@ namespace WebAPI.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly IPostRepository _postRepository;
         private readonly IFavoritePostRepository _favoritePostRepository;
         private readonly AppSettings _appSettings;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IOptions<AppSettings> appSettings, IMapper mapper, IFavoritePostRepository favoritePostRepository)
+        public UserService(IUserRepository repository, IOptions<AppSettings> appSettings, IMapper mapper, IFavoritePostRepository favoritePostRepository, IPostRepository postRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _favoritePostRepository = favoritePostRepository;
+            _postRepository = postRepository;
             _appSettings = appSettings.Value;
         }
 
@@ -111,9 +114,18 @@ namespace WebAPI.Services
             return status;      
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers()
+        public async Task<IEnumerable<UserPostNumberResponse>> GetAllUsers()
         {
-            return await _repository.GetAll();
+            var users = await _repository.GetAll();
+            ICollection<UserPostNumberResponse> userPostNumberList = new List<UserPostNumberResponse>();
+            foreach (var user in users)
+            {
+                var userPn = _mapper.Map<UserPostNumberResponse>(user);
+                userPn.PostsNumber = await _postRepository.GetAllAsQueryable().Where(post => post.IdUser == user.Id)
+                    .CountAsync();
+                userPostNumberList.Add(userPn);
+            }
+            return userPostNumberList;
         }
 
         public async Task<User> GetUserById(Guid id)

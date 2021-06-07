@@ -10,6 +10,7 @@ namespace WebAPI.Helpers
         public AutoMapperProfile()
         {
             CreateMap<User, AuthenticationResponse>();
+            CreateMap<User, UserPostNumberResponse>();
             CreateMap<RegisterModel, User>();
             CreateMap<UpdateUserModel, User>();
 
