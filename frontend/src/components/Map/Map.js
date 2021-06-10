@@ -4,6 +4,10 @@ import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from './layers';
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import "./map.css"
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import {geoDataZones, dataLayer, dataLayerLines, dataLayerSymbols, dataLayerHeatMap} from "./geoDataZones"
 
 
 function getCursor({isHovering, isDragging}) {
@@ -48,8 +52,11 @@ export default function Map() {
     const [err, setErr] = useState();
     const [loading, setLoading] = useState(true)
     const [selectedAsset, setSelectedAsset] = useState(null);
+    const [selectedZone, setSelectedZone] = useState(null);
     //const [posts, setPosts] = useState(null);
     const [geoData, setGeoData] = useState(null)
+    const [switchState, setSwitchState] = useState({Posts: true, Zones: false, HeatMap: false})
+
 
     useEffect(() => {
         const fetchPosts = async () =>{            
@@ -70,7 +77,6 @@ export default function Map() {
         fetchPosts();
     }, [])
 
-
     const closePopup = () => {
         setSelectedAsset(null)
     };
@@ -90,16 +96,25 @@ export default function Map() {
     */
 
     const onClickMap = (evt) =>{
-        console.log(evt.features)
+        console.log(evt)
         if(evt.features.length === 0)
             return
         const feature = evt.features[0]
+
+        if( feature?.layer?.id === "zones" ||  feature?.layer?.id === "symbols"){
+            setSelectedZone(feature.properties)
+            return
+        }
+
         if( feature?.layer?.id === "point"){
             setSelectedAsset(feature.properties)
             return
         }
 
         const clusterId = feature.properties?.cluster_id;
+
+        if (switchState.Posts === false)
+            return
 
         const mapboxSource = mapRef.current.getMap().getSource('adds');
 
@@ -119,6 +134,12 @@ export default function Map() {
 
       }
 
+
+    const handleChangeSwitch = (event) => {
+        setSwitchState({ ...switchState, [event.target.name]: event.target.checked });
+    };
+
+
     return (
         <div style={{maxHeight: "max-height"}}>
             <ReactMapGp 
@@ -129,36 +150,46 @@ export default function Map() {
                 mapboxApiAccessToken='pk.eyJ1Ijoic3RlZmFueGQ5OSIsImEiOiJja25qOW1nejQwaG41MnBwOHBpaXBzZXVwIn0.RGQrkmMTrau5mQaPrj6FLQ'
                 onClick={e => onClickMap(e)}
                 getCursor={getCursor}
-                //interactiveLayerIds={[clusterLayer.id]}
                 ref={mapRef}
             >
-                <Source 
-                    id="adds" 
-                    type="geojson" 
-                    data={geoData}
-                    cluster={true}
-                    clusterMaxZoom={15}
-                    clusterRadius={41}
-                >
-                    <Layer {...clusterLayer} />
-                    <Layer {...clusterCountLayer} />
-                    <Layer {...unclusteredPointLayer} />
-                </Source>
-                {/*
-                posts?.slice(0, 2).map((add) =>(
-                    <Marker 
-                    latitude={Number.parseFloat(add?.latitude)} 
-                    longitude={Number.parseFloat(add?.longitude)}
-                    key={add?.id}
-                    >
-                        <div 
-                            className="map-point" 
-                            style={{width: `${viewport.zoom}px`, height:`${viewport.zoom}px` }} 
-                            onClick={() => setSelectedAsset(add)}
-                        />     
-                    </Marker>
-                ))*/
+                {switchState.Posts &&
+                <>
+                    <Source 
+                        id="adds" 
+                        type="geojson" 
+                        data={geoData}
+                        cluster={true}
+                        clusterMaxZoom={15}
+                        clusterRadius={41}
+                    >         
+                        <Layer {...clusterLayer} />
+                        <Layer {...clusterCountLayer} />
+                        <Layer {...unclusteredPointLayer} />
+                    </Source>
+                </>
                 }
+                {switchState.Zones &&
+                <>
+                    <Source id="zones" type="geojson" data={geoDataZones}>
+                        <Layer {...dataLayer} />
+                    </Source>
+                    <Source id="lines" type="geojson" data={geoDataZones}>
+                        <Layer {...dataLayerLines} />
+                    </Source>  
+                    <Source id="symbols" type="geojson" data={geoDataZones}>
+                        <Layer {...dataLayerSymbols} />
+                    </Source>
+                </>
+                } 
+                {
+                switchState.HeatMap &&
+                <>
+                    <Source id="heatmap" type="geojson" data={geoData}>
+                        <Layer {...dataLayerHeatMap} />
+                    </Source>
+                </>
+                } 
+                
                 
                 {selectedAsset ? (
                     <Popup 
@@ -184,6 +215,23 @@ export default function Map() {
                 }
 
             </ReactMapGp>
+
+            <div style={{position: "absolute", top: "100px", left: "20px"}}>
+                <FormGroup column="true">
+                    <FormControlLabel
+                        control={<Switch checked={switchState.Posts} onChange={handleChangeSwitch} name="Posts" color="primary"/>}
+                        label="Posts"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={switchState.HeatMap} onChange={handleChangeSwitch} name="HeatMap" color="primary"/>}
+                        label="HeatMap"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={switchState.Zones} onChange={handleChangeSwitch} name="Zones" color="primary"/>}
+                        label="Zones"
+                    />
+                </FormGroup>
+            </div>
         </div>
     )
 }
