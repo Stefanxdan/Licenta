@@ -33,6 +33,16 @@ export default function PostsPage() {
     const [postsPerPage, setPostsPerPage] = useState(100);
     const [filters, setFilters] = useState(initialFilters)
 
+
+    const cityParam = window.location.href.split("CityLabel=")[1]?.replaceAll("%20"," ")
+    if(cityParam){
+        window.history.pushState("", "", '/posts');
+        setFilters(prevState => ({
+            ...prevState,
+            "CityLabel": cityParam
+        }));
+    }
+
     useEffect(() => {
         const fetchPosts = async () =>{
             const rawParams = {
@@ -40,7 +50,7 @@ export default function PostsPage() {
                 PageSize: postsPerPage
             }
             if(idUser)
-            Object.assign(rawParams,{IdUser: idUser})
+                Object.assign(rawParams,{IdUser: idUser})
             Object.assign(rawParams,filters)
             const params = Object.fromEntries(Object.entries(rawParams)
                 .filter(([key, value]) => ![null, "", 0, 1000].includes(value)))
@@ -70,6 +80,7 @@ export default function PostsPage() {
 
         setLoading(true);
         //setTimeout(() => {fetchPosts()},1000);
+
         if(idUser) 
             fetchUser();
         fetchPosts();

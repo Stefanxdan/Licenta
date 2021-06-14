@@ -44,7 +44,8 @@ export default function Map() {
         longitude: 27.586658,
         width: "100vw",
         height: "91vh",
-        zoom: 12
+        zoom: 12,
+        maxZoom: 18
     }); 
 
     const mapRef = useRef(null);
@@ -53,6 +54,7 @@ export default function Map() {
     const [loading, setLoading] = useState(true)
     const [selectedAsset, setSelectedAsset] = useState(null);
     const [selectedZone, setSelectedZone] = useState(null);
+    const [selectedZonePostsNumber, setSelectedZonePostsNumber] = useState(null);
     //const [posts, setPosts] = useState(null);
     const [geoData, setGeoData] = useState(null)
     const [switchState, setSwitchState] = useState({Posts: true, Zones: false, HeatMap: false})
@@ -77,6 +79,25 @@ export default function Map() {
         fetchPosts();
     }, [])
 
+    useEffect(() => {
+        const fetchZonesPosts = async () =>{            
+            await axios.get(`/Posts?Filters=true&CityLabel=${selectedZone?.name}`)
+            .then(response => { 
+                setSelectedZonePostsNumber(response.data?.totalPostsNumber);
+            })
+            .catch(error => {
+                if(error?.response?.status)
+                    setErr(error?.response?.status + " " + error?.response?.statusText)
+                else
+                    setErr("ERR_CONNECTION_REFUSED")
+            });            
+            setLoading(false);
+        }
+        //setTimeout(() => {fetchPosts()},500);
+        if(selectedZone)
+            fetchZonesPosts();
+    }, [selectedZone])
+
     const closePopup = () => {
         setSelectedAsset(null)
     };
@@ -96,13 +117,14 @@ export default function Map() {
     */
 
     const onClickMap = (evt) =>{
-        console.log(evt)
+        //console.log(evt)
         if(evt.features.length === 0)
             return
         const feature = evt.features[0]
 
         if( feature?.layer?.id === "zones" ||  feature?.layer?.id === "symbols"){
             setSelectedZone(feature.properties)
+            //console.log(feature.properties)
             return
         }
 
@@ -115,6 +137,7 @@ export default function Map() {
 
         if (switchState.Posts === false)
             return
+
 
         const mapboxSource = mapRef.current.getMap().getSource('adds');
 
@@ -159,7 +182,7 @@ export default function Map() {
                         type="geojson" 
                         data={geoData}
                         cluster={true}
-                        clusterMaxZoom={15}
+                        clusterMaxZoom={17}
                         clusterRadius={41}
                     >         
                         <Layer {...clusterLayer} />
@@ -231,6 +254,17 @@ export default function Map() {
                         label="Zones"
                     />
                 </FormGroup>
+            </div>
+            <div style={{position: "absolute", top: "100px", right: "20px"}}>
+                {
+                    selectedZone &&
+                    <div className="info-zone">
+                            <h5>{selectedZone?.name}</h5>
+                            <Link to={`/posts?CityLabel=${selectedZone?.name}`}>
+                                view all {selectedZonePostsNumber} posts
+                            </Link>
+                    </div>
+                }
             </div>
         </div>
     )

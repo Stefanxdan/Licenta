@@ -10,6 +10,7 @@ export default function Filters({filters, setFilters, totalPosts}) {
     //const Range = createSliderWithTooltip(Slider.Range);
     const [priceLabes, setpriceLabes] = useState([0,1000]);
 
+
     function handleEditFilters(e){
         const {name, value} = e.target
         if(filters[name] === value){
@@ -112,9 +113,12 @@ export default function Filters({filters, setFilters, totalPosts}) {
                 <br/>
                 <div className="div-select">
                     <span style={{paddingRight:"10px"}}>Neighborhood</span>
-                    <select id="CityLabel" name="CityLabel" onChange={handleEditFilters}>
+                    <select id="CityLabel" name="CityLabel"
+                        defaultValue={filters.CityLabel} onChange={handleEditFilters}>
                         <option value=""> All </option>
-                            {cities.map(city => (<option key={city} value={city}>{city}</option>))}
+                            {
+                            cities.map(city => 
+                            (<option key={city} value={city}>{city}</option>))}
                     </select>
                 </div>
                 <br/>
