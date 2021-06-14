@@ -14,8 +14,10 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.ML;
 using WebAPI.Data;
 using WebAPI.Helpers;
+using WebAPI.Models.Prediction;
 using WebAPI.Repositories;
 using WebAPI.Services;
 
@@ -110,7 +112,10 @@ namespace WebAPI
                 });
             });
 
-            
+            services.AddPredictionEnginePool<PredictionInput, PredictionOutput>()
+                .FromFile(modelName: "PricePredictionModel", filePath: "Models/MLModel.zip", watchForChanges: true);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
