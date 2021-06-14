@@ -9,10 +9,11 @@ namespace WebAPI.Models.Prediction
 
 
         [ColumnName("Bathrooms"), LoadColumn(1)]
-        public float Bathrooms { get; set; } 
+        public float Bathrooms { get; set; }
 
-        [ColumnName("City_Label"), LoadColumn(2)]
-        public string CityLabel { get; set; } 
+
+        [ColumnName("City_label"), LoadColumn(2)]
+        public string CityLabel { get; set; }
 
     }
 }

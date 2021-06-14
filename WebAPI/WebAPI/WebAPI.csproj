@@ -28,4 +28,8 @@
     <Folder Include="Resources\Images" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebAPIML.Model\WebAPIML.Model.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -12,8 +12,9 @@ namespace WebAPIML.ConsoleApp
             // Create single instance of sample data from first line of dataset for model input
             ModelInput sampleData = new ModelInput()
             {
-                Bedrooms = 2F,
+                Bedrooms = 3F,
                 Bathrooms = 2F,
+                City_label = @"Bucium",
             };
 
             // Make a single prediction on the sample data and print results
@@ -22,6 +23,7 @@ namespace WebAPIML.ConsoleApp
             Console.WriteLine("Using model to make single prediction -- Comparing actual Price with predicted Price from sample data...\n\n");
             Console.WriteLine($"Bedrooms: {sampleData.Bedrooms}");
             Console.WriteLine($"Bathrooms: {sampleData.Bathrooms}");
+            Console.WriteLine($"City_label: {sampleData.City_label}");
             Console.WriteLine($"\n\nPredicted Price: {predictionResult.Score}\n\n");
             Console.WriteLine("=============== End of process, hit any key to finish ===============");
             Console.ReadKey();

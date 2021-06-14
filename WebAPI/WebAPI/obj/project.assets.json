@@ -2389,6 +2389,19 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "WebAPIML.Model/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.ML": "1.5.0-preview2"
+        },
+        "compile": {
+          "bin/placeholder/WebAPIML.Model.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WebAPIML.Model.dll": {}
+        }
       }
     }
   },
@@ -7890,6 +7903,11 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "WebAPIML.Model/1.0.0": {
+      "type": "project",
+      "path": "../WebAPIML.Model/WebAPIML.Model.csproj",
+      "msbuildProject": "../WebAPIML.Model/WebAPIML.Model.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -7904,7 +7922,8 @@
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.4",
       "Microsoft.Extensions.ML >= 1.5.5",
       "Microsoft.ML.FastTree >= 1.5.5",
-      "Swashbuckle.AspNetCore >= 5.6.3"
+      "Swashbuckle.AspNetCore >= 5.6.3",
+      "WebAPIML.Model >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -7933,7 +7952,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Facultate\\Licenta\\WebAPI\\WebAPIML.Model\\WebAPIML.Model.csproj": {
+              "projectPath": "D:\\Facultate\\Licenta\\WebAPI\\WebAPIML.Model\\WebAPIML.Model.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

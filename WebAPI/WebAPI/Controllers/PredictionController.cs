@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
 using WebAPI.Models.Prediction;
+using WebAPIML.Model;
 
 namespace WebAPI.Controllers
 {
@@ -23,7 +25,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<PredictionOutput> Prediction([FromBody] PredictionInput input)
+        public async Task<ActionResult<PredictionResults>> Prediction([FromBody] PredictionInput input)
         {
             if (!ModelState.IsValid)
             {
@@ -31,7 +33,16 @@ namespace WebAPI.Controllers
             }
 
             var prediction = _predictionEnginePool.Predict(modelName: "PricePredictionModel", example: input);
-            return Ok(prediction);
+            var modelInput = new ModelInput()
+            {
+                Bathrooms = input.Bathrooms,
+                Bedrooms = input.Bedrooms,
+                City_label = input.CityLabel
+            };
+            var modelOutput = await Task.Run(() =>ConsumeModel.Predict(modelInput));
+            var results = new PredictionResults(prediction, modelOutput);
+            return Ok(results);
         }
+        
     }
 }

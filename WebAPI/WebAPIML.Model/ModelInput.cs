@@ -14,7 +14,11 @@ namespace WebAPIML.Model
         public float Bathrooms { get; set; }
 
 
-        [ColumnName("Price"), LoadColumn(2)]
+        [ColumnName("City_label"), LoadColumn(2)]
+        public string City_label { get; set; }
+
+
+        [ColumnName("Price"), LoadColumn(3)]
         public float Price { get; set; }
 
 

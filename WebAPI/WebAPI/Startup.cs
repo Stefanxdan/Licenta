@@ -114,7 +114,8 @@ namespace WebAPI
 
             services.AddPredictionEnginePool<PredictionInput, PredictionOutput>()
                 .FromFile(modelName: "PricePredictionModel", filePath: "Models/MLModel.zip", watchForChanges: true);
-
+            services.AddPredictionEnginePool<PredictionInput, PredictionOutput>()
+                .FromFile(modelName: "PricePredictionModel2", filePath: "Models/MLModel2.zip", watchForChanges: true);
 
         }
 

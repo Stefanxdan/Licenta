@@ -7,13 +7,13 @@ using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using WebAPIML.Model;
-using Microsoft.ML.Trainers.FastTree;
+using Microsoft.ML.Trainers;
 
 namespace WebAPIML.ConsoleApp
 {
     public static class ModelBuilder
     {
-        private static string TRAIN_DATA_FILEPATH = @"D:\Facultate\QueryDBLicenta\(0.733)BedBath_view2-eliminare_extreme.csv";
+        private static string TRAIN_DATA_FILEPATH = @"D:\Facultate\QueryDBLicenta\(0.605)BedBathCity_view-eliminare_extreme.csv";
         private static string MODEL_FILEPATH = @"C:\Users\stefa\AppData\Local\Temp\MLVSTools\WebAPIML\WebAPIML.Model\MLModel.zip";
         // Create MLContext to be shared across the model creation workflow objects 
         // Set a random seed for repeatable/deterministic results across multiple trainings.
@@ -45,9 +45,12 @@ namespace WebAPIML.ConsoleApp
         public static IEstimator<ITransformer> BuildTrainingPipeline(MLContext mlContext)
         {
             // Data process configuration with pipeline data transformations 
-            var dataProcessPipeline = mlContext.Transforms.Concatenate("Features", new[] { "Bedrooms", "Bathrooms" });
+            var dataProcessPipeline = mlContext.Transforms.Categorical.OneHotEncoding(new[] { new InputOutputColumnPair("City_label", "City_label") })
+                                      .Append(mlContext.Transforms.Concatenate("Features", new[] { "City_label", "Bedrooms", "Bathrooms" }))
+                                      .Append(mlContext.Transforms.NormalizeMinMax("Features", "Features"))
+                                      .AppendCacheCheckpoint(mlContext);
             // Set the training algorithm 
-            var trainer = mlContext.Regression.Trainers.FastTree(new FastTreeRegressionTrainer.Options() { NumberOfLeaves = 61, MinimumExampleCountPerLeaf = 1, NumberOfTrees = 500, LearningRate = 0.1004551f, Shrinkage = 0.1218241f, LabelColumnName = "Price", FeatureColumnName = "Features" });
+            var trainer = mlContext.Regression.Trainers.Sdca(new SdcaRegressionTrainer.Options() { L2Regularization = 0.001f, L1Regularization = 0f, ConvergenceTolerance = 0.1f, MaximumNumberOfIterations = 100, Shuffle = true, BiasLearningRate = 0f, LabelColumnName = "Price", FeatureColumnName = "Features" });
 
             var trainingPipeline = dataProcessPipeline.Append(trainer);
 
