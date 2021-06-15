@@ -1,0 +1,105 @@
+.HomePage .block1{
+    background-image: url("../../assets/background.jpg");
+    background-size:cover;
+    height: 500px;
+    text-align: center;
+}
+
+.HomePage .hp-title{
+    color: white;
+    font-size: 3.5rem;
+    padding-top: 100px;
+    padding-right: 30px;
+    text-shadow: 1px 1px 5px black;
+}
+
+.HomePage .hp-subtitle{
+    color: white;
+    font-size: 1.5rem;
+    padding-top: 80px;
+    text-shadow: 1px 1px 5px black;
+    text-shadow: -1px 0 2px black, 0 1px 2px black, 1px 0 2px black, 0 -1px 2px black;
+}
+
+.PricePrediction{
+    padding-top: 50px;
+    background-color: whitesmoke;
+}
+
+.PricePrediction h3{
+    padding: 20px 0;
+    text-align: center;
+
+}
+.PricePrediction h5{
+    padding: 20px 0;
+    text-align: center;
+}
+
+
+.PricePredictionInfo{
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+}
+
+.PricePrediction .comp{
+    margin: 50px;
+    height: 380px;
+    width: 572px;
+    background-image: url("../../assets/tarot.jpg");
+    background-size:cover;
+    background-position: right;
+}
+
+.PricePrediction .comp2{
+    flex-grow: 1;
+    flex-basis: 0;
+    margin: 50px;
+    height: 400px;
+    min-width: 350px;
+    max-width: 700px;
+}
+
+.PricePrediction .PricePredictionContainer{
+    display: flex;
+    justify-content:space-evenly;
+    flex-wrap: wrap;
+    padding: 50px 20px;
+    padding-bottom: 100px;
+}
+.PricePrediction form{
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:space-evenly;
+    max-width: 400px;
+    height: 400px;
+    padding: 0px 20px;
+    border-radius: 10px;
+}
+
+.PricePrediction .prePrediction{
+    width: 400px;
+    height: 400px;
+    background-image: url("../../assets/distributie.png");
+    background-size:cover;
+}
+
+.PricePrediction .postPrediction{
+    width: 600px;
+    height: 400px;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.PricePrediction .postPrediction h5{
+    padding-top: 45px;
+    padding-bottom: 5px;
+}
+
+.PricePrediction .postPrediction span{
+    padding: 0 20px;
+}

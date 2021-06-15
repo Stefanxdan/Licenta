@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import Home from './components/Home'
+import Home from './components/Home/Home'
 import PostsPage from './components/Posts/PostsPage'
 import PostPage from './components/Post/PostPage'
 import AddPost from './components/Account/AddPost'
