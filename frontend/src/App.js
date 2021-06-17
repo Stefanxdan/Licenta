@@ -24,10 +24,10 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/posts" component={PostsPage} />
+            <PrivateRoute exact path="/posts/add" component={AddPost} />
             <Route exact path="/posts/:idPost" component={PostPage} />
             <Route exact path="/posts/Filters" component={PostsPage} />
             <Route exact path="/posts/user/:idUser" component={PostsPage} />
-            <PrivateRoute exact path="/posts/add" component={AddPost} />
             <PrivateRoute exact path="/posts/edit/:idPost" component={EditPost} />
             <Route exact path="/map" component={Map} />
             <Route exact path="/register" component={Signup} />

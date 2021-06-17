@@ -107,9 +107,8 @@ export default function PostsPage() {
                             </div>
                         ): err ? (
                             <div className="err-response">{err}</div>
-                        ):(
-                            <Posts posts={posts}/>
-                        )}
+                        ): null}
+                        <Posts posts={posts}/>
                     </div>
                 </div>
                 <Pagination

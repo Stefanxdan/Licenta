@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useLayoutEffect, useState} from 'react'
 import ReactMapGp, {Marker, Source, Layer} from 'react-map-gl'
 import * as turf from "@turf/turf";
 
@@ -7,10 +7,18 @@ export default function PostMap({post}) {
     const [viewport, setViewport] = useState({
         latitude: post?.latitude,
         longitude: post?.longitude,
-        width: "1100px",
+        width: "100%",
         height: "600px",
         zoom: 14
     }); 
+    
+    useLayoutEffect(() => {
+        function updateViewport() {
+            setViewport({...viewport, width: "100%"})
+        }
+        window.addEventListener('resize', updateViewport);
+        return () => window.removeEventListener('resize', updateViewport);
+      }, [viewport]);
 
     
     const center = [post?.longitude, post?.latitude];

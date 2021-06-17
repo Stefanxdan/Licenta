@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef,useLayoutEffect} from 'react'
 import ReactMapGp, {Popup, Source, Layer} from 'react-map-gl'
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from './layers';
 import axios from 'axios'
@@ -42,11 +42,21 @@ export default function Map() {
     const [viewport, setViewport] = useState({
         latitude: 47.157792,
         longitude: 27.586658,
-        width: "100vw",
-        height: "91vh",
+        width: "100%",
+        height: "92vh",
         zoom: 12,
         maxZoom: 18
     }); 
+
+    useLayoutEffect(() => {
+        function updateViewport() {
+            setViewport({...viewport, width: "100%",  height: "92vh",})
+        }
+        window.addEventListener('resize', updateViewport);
+        return () => window.removeEventListener('resize', updateViewport);
+      }, [viewport]);
+
+    
 
     const mapRef = useRef(null);
 

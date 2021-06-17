@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState, useCallback, useLayoutEffect} from 'react'
 import { useForm } from "react-hook-form"
 import ReactMapGp, {Marker} from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
@@ -65,6 +65,16 @@ export default function AddPost() {
         height: "600px",
         zoom: 14
     });
+
+    useLayoutEffect(() => {
+        function updateViewport() {
+            setViewport({...viewport, width: "100%"})
+        }
+        window.addEventListener('resize', updateViewport);
+        return () => window.removeEventListener('resize', updateViewport);
+      }, [viewport]);
+
+    
     
     const [marker, setMarker] = useState({
         latitude: 47.157792,

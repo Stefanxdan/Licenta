@@ -34,7 +34,7 @@ export default function PostCard(props) {
     if( !post )
         return(<></>)
     return (
-        <div className="flex">
+        <div className="flex post-card">
         <Link to={`/posts/${post?.id}`} className="card-LinkTo" style={{flexGrow:1}}>
             <div className="card-container">
                 <div className="img-container">
