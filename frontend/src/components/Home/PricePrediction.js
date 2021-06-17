@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
-import {stats} from './Stats'
+import {columnsStats, stats} from './Stats'
 import {cities} from '../../assets/CitiesArray'
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import { DataGrid } from '@material-ui/data-grid';
 import axios from 'axios'
 
 
@@ -25,21 +26,30 @@ export default function PricePrediction() {
     const [bedrooms, setBedrooms] = useState(2);
     const [bathrooms, setBathrooms] = useState(1);
     const [prediction, setPrediction] = useState(null)
+    const [showStats, setShowStats] = useState(false)
 
 
     const handlePredictBtn = () =>{
         const getPrediction = async (body) =>{
         await axios.post('/Prediction', body)
         .then(response => { 
-            console.log(response.data)
-            const statsPrd = stats.find( s => s.Bedrooms === bedrooms && s.City_label=== city)
-            console.log(statsPrd)
+            let statsPrd = stats.find( s => s.Bedrooms === bedrooms && s.City_label=== city)
+            if(statsPrd === undefined)
+                statsPrd = {Bedrooms: bedrooms,
+                    City_label: "Centru",
+                    avgPrice: 0,
+                    counter: 0,
+                    deviation: 0,
+                    maxPrice: 0,
+                    minPrice: 0,}
             setPrediction([response.data?.price, response.data?.priceByCity, statsPrd])
         })
         .catch(error => {
             console.log(error?.response?.status + " " + error?.response?.statusText)
         });  
         }
+
+        setShowStats(false)
         const body = {bedrooms, bathrooms, cityLabel: city}
         getPrediction(body)         
     }
@@ -102,7 +112,7 @@ export default function PricePrediction() {
                             </MenuItem>
                         ))}
                         </TextField>
-                    <Button variant="outlined" color="primary" className="predictBtn" onClick={handlePredictBtn}>Predict</Button>
+                    <Button variant="contained" color="primary" className="predictBtn" onClick={handlePredictBtn}>Predict</Button>
                 </form>
                 {
                     !prediction ? 
@@ -112,16 +122,23 @@ export default function PricePrediction() {
                             <h5>Machine Learning</h5>
                             <div>Price by Bedrooms and Bathrooms : <strong>{prediction[0]}</strong></div>
                             <div>Price by Bedrooms, Bathrooms and Neighbourhood : <strong>{prediction[1]}</strong></div>
-                            <h5 style={{marginTop:"2rem"}}>Statistics</h5>
+                            <h5 style={{marginTop:"2rem"}}>Statistics {prediction[2]?.Bedrooms} bedrooms, {prediction[2]?.City_label}</h5>
                             <div>Posts number : <strong>{prediction[2]?.counter}</strong></div>
                             <div> Average price: <strong>{prediction[2]?.avgPrice}</strong></div>
                             <span> Min price: <strong>{prediction[2]?.minPrice}</strong></span>
                             <span> Max price: <strong>{prediction[2]?.maxPrice}</strong></span>
                             <div> Standard deviation: <strong>{Number((prediction[2]?.deviation).toFixed(4))}</strong></div>
-
+                            <h5>
+                                <Button  variant="outlined" color="primary" className="predictBtn" onClick={() => setShowStats(true)}>More Stats</Button>
+                            </h5>
                         </div>
                 }
             </div>
+            {
+                showStats &&
+                <div className="stats">
+                    <DataGrid rows={stats.map((s,index) => s = {...s, id: index+1})} columns={columnsStats} pageSize={15} />
+                </div>}
         </div>
     )
 }

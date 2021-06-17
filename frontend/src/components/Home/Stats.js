@@ -1,3 +1,15 @@
+export const columnsStats= [
+  { field: 'Bedrooms', headerName: 'Bedrooms', width: 160 },
+  { field: 'City_label', headerName: 'Neighbourhood', width: 200 },
+  { field: 'minPrice', headerName: 'Min Price', width: 150 },
+  { field: 'avgPrice', headerName: 'Avg Price', width: 150 },
+  { field: 'maxPrice', headerName: 'Max Price', width: 150 },
+  { field: 'deviation', headerName: 'Deviation', width: 200 },
+  { field: 'counter', headerName: 'Counter', width: 150 },
+
+];
+
+
 export const stats =[
     {
       "Bedrooms": 1,
