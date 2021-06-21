@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WebAPI.Entities.BaseEntity" Collapsed="true">
+    <Position X="3.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\BaseEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebAPI.Entities.FavoritePost" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\FavoritePost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebAPI.Entities.Post" Collapsed="true">
+    <Position X="5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>yAIBAAAACUCgAUAQAAAIAAAgCAAAAEAASQIAgAQAAAA=</HashCode>
+      <FileName>Entities\Post.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebAPI.Entities.Role" Collapsed="true">
+    <Position X="2.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebAPI.Entities.User" Collapsed="true">
+    <Position X="2.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAACFQAAQAAAAAAAAAACAAAAAAAAAAg=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebAPI.Repositories.FavoritePostRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="8" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAQAAABAAABAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\FavoritePostRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WebAPI.Repositories.PostRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAcAAAAAAAEAABAAAAAABAAAAAAAQAAAAhAAAAAAAIA=</HashCode>
+      <FileName>Repositories\PostRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.653" Collapsed="true" />
+  </Class>
+  <Class Name="WebAPI.Repositories.UserRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAgAABAAAACAAQAAAAgAAAAAAAIA=</HashCode>
+      <FileName>Repositories\UserRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.733" Collapsed="true" />
+  </Class>
+  <Class Name="WebAPI.Services.PostService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABMAAAIAAARBAAAQAAABAAAAAAAAAAAAIFAAAiAAAAA=</HashCode>
+      <FileName>Services\PostService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.633" Collapsed="true" />
+  </Class>
+  <Class Name="WebAPI.Services.UserService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAABAAAAEAAgBAAYAQRAAAAggAAAAABEAAAA=</HashCode>
+      <FileName>Services\UserService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.625" Collapsed="true" />
+  </Class>
+  <Class Name="WebAPI.Controllers.PostsController" Collapsed="true">
+    <Position X="9.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAQAAAAQAAIAAAAAABEAAAAgAEAUAAAAIAA=</HashCode>
+      <FileName>Controllers\PostsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebAPI.Controllers.PredictionController" Collapsed="true">
+    <Position X="6.25" Y="7.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\PredictionController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebAPI.Controllers.UploadFilesController" Collapsed="true">
+    <Position X="5.25" Y="6.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\UploadFilesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebAPI.Controllers.UsersController" Collapsed="true">
+    <Position X="9.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAAAAIAQAAAAAAAAAAAAIAQAEAAIAAAAAEAAEAAAA=</HashCode>
+      <FileName>Controllers\UsersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="WebAPI.Repositories.IFavoritePostRepository" Collapsed="true">
+    <Position X="0.5" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAQAAABAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\FavoritePostRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WebAPI.Repositories.IRepository&lt;T&gt;" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAAAAIA=</HashCode>
+      <FileName>Repositories\IRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WebAPI.Repositories.IPostRepository" Collapsed="true">
+    <Position X="4.5" Y="1.25" Width="1.5" />
+    <InheritanceLine Type="WebAPI.Repositories.IRepository&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="3" Y="1.938" />
+        <Point X="3.608" Y="1.938" />
+        <Point X="3.608" Y="1.596" />
+        <Point X="4.5" Y="1.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAMAAAAAAAEAABAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Repositories\PostRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WebAPI.Repositories.IUserRepository" Collapsed="true">
+    <Position X="4.5" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="WebAPI.Repositories.IRepository&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="2.125" />
+        <Point X="3.625" Y="2.125" />
+        <Point X="3.625" Y="2.438" />
+        <Point X="4.5" Y="2.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\UserRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WebAPI.Services.IPostService" Collapsed="true">
+    <Position X="7" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAMAAAIAAAQBAAAQAAAAAAAAAAAAAAAAIFAAAiAAAAA=</HashCode>
+      <FileName>Services\PostService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WebAPI.Services.IUserService" Collapsed="true">
+    <Position X="7" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAEAAgAAAIAQRAAAAAgAAAAAAEAAAA=</HashCode>
+      <FileName>Services\UserService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

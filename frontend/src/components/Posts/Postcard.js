@@ -52,6 +52,7 @@ export default function PostCard(props) {
                             <div>{post.bedrooms} bedrooms</div>
                             <div>{post.bathrooms} bathrooms</div>
                             <div>{post.surfaceUseful} m^2</div>
+                            <div>{post.cityLabel}</div>
                         </div>
                         <div className='card-price'>{post.price}{post.currency==="EUR" ? "€" : post.currency}</div>
                     </div>

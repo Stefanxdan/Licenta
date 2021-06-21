@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import Filters from './Filters'
 import Posts from './Posts'
-import Pagination from './Pagination'
+import PaginationComp from './Pagination'
 import './Posts.css'
 
 const initialFilters = {
@@ -30,7 +30,7 @@ export default function PostsPage() {
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState();
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(100);
+    const [postsPerPage, setPostsPerPage] = useState(50);
     const [filters, setFilters] = useState(initialFilters)
 
 
@@ -57,6 +57,7 @@ export default function PostsPage() {
             //console.log(params)
             await axios.get('/Posts', {params})
             .then(response => { 
+                setPosts(null)
                 setPosts(response.data?.posts);
                 settotalPostsNumber(response.data?.totalPostsNumber)
             })
@@ -86,8 +87,10 @@ export default function PostsPage() {
         fetchPosts();
     },[currentPage, postsPerPage, filters,idUser])
 
+
     // Change page
-    const paginate = (pageNumber) => { setCurrentPage(pageNumber); } 
+    const paginate = (pageNumber) => { 
+        setCurrentPage(pageNumber); } 
 
     return (
         <>
@@ -111,9 +114,9 @@ export default function PostsPage() {
                         <Posts posts={posts}/>
                     </div>
                 </div>
-                <Pagination
+                <PaginationComp
                     postPerPage={postsPerPage} totalPosts={totalPostsNumber} 
-                    paginate={paginate} setPostsPerPage={setPostsPerPage}/>
+                    paginate={paginate} setPostsPerPage={setPostsPerPage} currentPage={currentPage}/>
             </div>
             
         </>

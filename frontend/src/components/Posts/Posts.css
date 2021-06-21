@@ -99,6 +99,7 @@
 .filters-container{
     flex-grow: 0;
     flex-basis: 300px;
+    flex-shrink: 0;
     padding: 1rem;
     margin: 0 2rem;
     background-color: whitesmoke;

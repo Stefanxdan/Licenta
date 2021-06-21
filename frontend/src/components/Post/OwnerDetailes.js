@@ -27,7 +27,10 @@ export default function OwnerDetailes({post}) {
                 {user?.role === "Provider" ?
                     <div>View the orignal post from storia <a href={post?.externalUrl} target="_blank" rel="noreferrer">here</a></div>
                 :
-                    <div>Member from {user?.timeAdded.split("T")[0]}</div>
+                    <>
+                        <div>Phone number <a href="" target="_blank" rel="noreferrer">unhide</a></div>
+                        <div>Member from {user?.timeAdded.split("T")[0]}</div>
+                    </>
                 }
                 <div style={{paddingTop: "1rem"}}>
                     See all post from this {user?.role === "Provider" ? "provider" : "user"} <Link to={`/posts/user/${post?.idUser}`}>here</Link>
