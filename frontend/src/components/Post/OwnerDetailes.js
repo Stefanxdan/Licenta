@@ -28,7 +28,7 @@ export default function OwnerDetailes({post}) {
                     <div>View the orignal post from storia <a href={post?.externalUrl} target="_blank" rel="noreferrer">here</a></div>
                 :
                     <>
-                        <div>Phone number <a href="" target="_blank" rel="noreferrer">unhide</a></div>
+                        <div>Phone number <strong>{user?.phoneNumber}</strong></div>
                         <div>Member from {user?.timeAdded.split("T")[0]}</div>
                     </>
                 }

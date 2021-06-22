@@ -4,10 +4,16 @@ import { useForm } from "react-hook-form"
 import ReactMapGp, {Marker} from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
 import {cities} from "../../assets/CitiesArray"
+import defaultImgSrc from '../../assets/add-img.png'
+
 
 import axios from 'axios'
 
 export default function EditPost() {
+
+    let fileInput = null;
+    const [inputFiles, setInputFiles] = useState([])
+    const [previewImg, setPreviewImg] = useState([])
 
     const { idPost } = useParams()
     const [post, setPost] = useState();
@@ -65,6 +71,9 @@ export default function EditPost() {
         fetchPost();
     },[idPost])
 
+    useEffect(() => {
+        setPreviewImg(post?.photosPaths?.split("<>").map( (img) => ( `http://localhost:5000/Resources/Images/${post?.id}/${img}.png`) ))
+    }, [post?.photosPaths, post?.id])
 
     useEffect(() => {
         setMarker({
@@ -90,7 +99,24 @@ export default function EditPost() {
             setLoading(true);
             await axios.put(`/Posts/${post.id}`,data)
             .then(response => { 
-                history.push(`/Posts/${post.id}`)
+                uploadPhoto(response.data.id)
+            })
+            .catch(error => {
+                setErr(true)
+            });
+            setLoading(false);
+        }
+
+        const uploadPhoto = async (postId) =>{
+            
+            const formData = new FormData()
+            Array.from(inputFiles).map((file) => formData.append('imageFile', file))
+            formData.append('postId',postId)
+
+            setLoading(true);
+            await axios.post(`/UploadFiles`,formData)
+            .then(response => { 
+                history.push("/account")
             })
             .catch(error => {
                 setErr(true)
@@ -100,6 +126,15 @@ export default function EditPost() {
 
         editPost();
     }
+
+    function filesInputHandler(e){
+        if(e.target.files){
+            const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file)).slice(0,10)
+            setPreviewImg(fileArray);
+            setInputFiles(e.target.files);
+        }
+    }
+
 
     return (
         <>
@@ -303,7 +338,21 @@ export default function EditPost() {
 
                         </ReactMapGp>
                     </div>
-
+                    
+                    <h4 style={{paddingTop:"2rem", paddingBottom:"1rem"}}>Edit photos (max 10)</h4>
+                    <div className="add-photo">
+                        {
+                            previewImg.map((photo) =>
+                                <img src={photo} key={photo} alt="postPhoto"/>
+                            )
+                        }
+                        <img src={defaultImgSrc} alt="postPhoto" onClick={() => fileInput.click()}/>
+                        <input 
+                            type="file" accept="image/*" multiple
+                            id="photo" name="photo" 
+                            onChange={filesInputHandler}
+                            ref={(input) => { fileInput = input} }/>
+                    </div>
                 </div>
             </div>
             )

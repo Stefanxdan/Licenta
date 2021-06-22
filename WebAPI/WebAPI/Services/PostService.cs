@@ -107,7 +107,14 @@ namespace WebAPI.Services
         {   
             var folderName = Path.Combine("Resources", "Images", id.ToString());
             var pathToDelete = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            Directory.Delete(pathToDelete, true);
+            try
+            {
+                Directory.Delete(pathToDelete, true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             var status = await _repository.Remove(id);
             return status;  

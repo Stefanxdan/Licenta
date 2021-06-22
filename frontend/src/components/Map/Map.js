@@ -43,7 +43,7 @@ export default function Map() {
         latitude: 47.157792,
         longitude: 27.586658,
         width: "100%",
-        height: "92vh",
+        height: "calc(100vh - 80px)",
         zoom: 12,
         maxZoom: 18
     }); 

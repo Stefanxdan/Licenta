@@ -6,7 +6,6 @@ import axios from 'axios'
 import defaultImgSrc from '../../assets/add-img.png'
 import {cities} from "../../assets/CitiesArray"
 
-
 export default function AddPost() {
 
     let fileInput = null;
@@ -17,16 +16,13 @@ export default function AddPost() {
     const [inputFiles, setInputFiles] = useState([])
     const [previewImg, setPreviewImg] = useState([])
 
-
     const onSubmit = (data) => {
 
         const addPost = async () =>{
             data["Latitude"] = marker.latitude;
             data["Longitude"] = marker.longitude;
             data["MapRadius"] = 0;
-            data["ForRent"] = 1;
             data["PhotosNumber"] = previewImg.length;
-            console.log(data)
             setLoading(true);
             await axios.post(`/Posts`,data)
             .then(response => { 
@@ -53,7 +49,6 @@ export default function AddPost() {
             });
             setLoading(false);
         }
-
 
         addPost();
     }
@@ -238,7 +233,6 @@ export default function AddPost() {
                                     <strong>City Label:</strong>
                                 </label>
                                 <select id="CityLabel" name="CityLabel" {...register("CityLabel", { required:"City Label required" })}>
-                                    <option value="Iasi (judet), Iasi">Iasi (judet), Iasi</option>
                                     {
                                         cities.map(n =>
                                             (

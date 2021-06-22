@@ -93,7 +93,7 @@ export default function PostsPage() {
         setCurrentPage(pageNumber); } 
 
     return (
-        <>
+        <div style={{ height: "calc(100vh - 80px)",overflowY: "scroll"}}>
             <div style={{maxWidth: "1600px", margin: "auto"}}>
                 <div className="title-user-posts">
                     {
@@ -118,7 +118,6 @@ export default function PostsPage() {
                     postPerPage={postsPerPage} totalPosts={totalPostsNumber} 
                     paginate={paginate} setPostsPerPage={setPostsPerPage} currentPage={currentPage}/>
             </div>
-            
-        </>
+        </div>
     )
 }

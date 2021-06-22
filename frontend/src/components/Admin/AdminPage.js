@@ -3,7 +3,6 @@ import { useAuth } from "../../contexts/authcontext"
 import {useHistory } from 'react-router-dom'
 import AdminCard from './AdminCard'
 import Users from './Users'
-import Posts from '../Posts/Posts'
 import axios from 'axios'
 import "./admin.css"
 
@@ -14,17 +13,15 @@ export default function AdminPage() {
     const { currentUser, logout } = useAuth()
     const history = useHistory()
 
-    const [posts, setPosts] = useState();
     const [users, setUsers] = useState();
     const [displayPosts, setDisplayPosts] = useState(false);
 
     const [err, setErr] = useState();
     const [loading, setLoading] = useState(true);
-    const [loading2, setLoading2] = useState(true);
 
 
     useEffect(() => {
-         if(currentUser.role !== "Admin")
+        if(currentUser.role !== "Admin")
              history.push('/')
 
              const fetchUsers = async () =>{
@@ -43,24 +40,8 @@ export default function AdminPage() {
                 setLoading(false);
             }
     
-            const fetchPosts = async () =>{
-                setLoading2(true);
-                await axios.get(`/Posts`)
-                .then(response => { 
-                    setPosts(response.data);
-                })
-                .catch(error => {
-                    if(error?.response?.status)
-                        setErr(error?.response?.status + " " + error?.response?.statusText)
-                    else
-                        setErr("ERR_CONNECTION_REFUSED")
-                });
-                setLoading2(false);
-            }
-            
             fetchUsers();
-            fetchPosts();
-
+        return () => (setUsers(null))
     }, [currentUser, history])
 
     function handleLogout(){
@@ -74,7 +55,7 @@ export default function AdminPage() {
         {
             currentUser.role === "Admin" &&
             <div className="account-page">
-                {(loading && loading2) ? (
+                {(loading) ? (
                     <div className="loading-spiner-container">
                         <i className="loading-spiner fas fa-spinner fa-pulse"></i>
                     </div>
@@ -83,7 +64,6 @@ export default function AdminPage() {
                 ):
                 <div className="account-page-inner">
                     <AdminCard handleLogout={handleLogout} setDisplayPosts={setDisplayPosts}/>
-                    <Posts posts={posts} editable={true} deletable={true} notDisplay={!displayPosts}/>
                     <Users users={users} editable={false} deletable={true} notDisplay={displayPosts}/>
                 </div>
                 }

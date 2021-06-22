@@ -10,8 +10,6 @@ import axios from 'axios'
 
 
 
-
-
 export default function Users({users}) {
 
     const pageSize = 5;
@@ -38,7 +36,8 @@ export default function Users({users}) {
                 </IconButton>
                 <IconButton color="secondary" aria-label="delete"
                     onClick={() => {
-                        console.log("delete")
+                        setInfoDialog(params.row)
+                        setDialogDeleteUserOpen(true)
                     }}>
                         <i className="fas fa-trash-alt"/>
                 </IconButton>
@@ -59,7 +58,8 @@ export default function Users({users}) {
                 </IconButton>
                 <IconButton color="secondary" aria-label="delete"
                 onClick={() => {
-                    console.log("delete")
+                    setInfoDialog(params.row)
+                    setDialogDeletePostOpen(true)
                 }}>
                     <i className="fas fa-trash-alt"></i>
                 </IconButton>
@@ -99,15 +99,40 @@ export default function Users({users}) {
         }
     ]
 
+    const deleteUserAsync = async (userId) =>{
+        await axios.delete(`/Users/${userId}`)
+        .then(response => { 
+            console.log(response.data)
+            setDialogDeleteUserOpen(false)
+            window.location.reload();
+        })
+        .catch(error => {
+            console.log(error.data)
+        });
+    }
+
+    const deletePostAsync = async (postId) =>{
+        await axios.delete(`/Posts/${postId}`)
+        .then(response => { 
+            console.log(response.data)
+            setDialogDeletePostOpen(false)
+            window.location.reload();
+        })
+        .catch(error => {
+            console.log(error.data)
+        });
+    }
+
     const [infoDialog, setInfoDialog] = useState(null)
     const [postsUser, setPostsUser] = useState(null)
     const [posts, setPosts] = useState(null)
 
+    const [dialogDeleteUserOpen, setDialogDeleteUserOpen] = useState(false);
+    const [dialogDeletePostOpen, setDialogDeletePostOpen] = useState(false);
     const [dialogUserOpen, setDialogUserOpen] = useState(false);
     const [dialogPostOpen, setDialogPostOpen] = useState(false);
 
     useEffect(() => {
-   
         const fetchPosts = async () =>{
             await axios.get(`/Posts/user/${postsUser?.id}`)
             .then(response => { 
@@ -120,7 +145,6 @@ export default function Users({users}) {
                     console.log("ERR_CONNECTION_REFUSED")
             });
         }
-        
         if(postsUser)
             fetchPosts();
 
@@ -131,7 +155,7 @@ export default function Users({users}) {
         <div className="admin-users">
             <h2>Users</h2>
             {users &&
-                <div style={{ height:  Math.min(pageSize,users?.length)*52+110, width: '100%', backgroundColor: 'white' }}>
+                <div style={{ height:  Math.min(pageSize,users?.length)*52+130, width: '100%', backgroundColor: 'white' }}>
                     <DataGrid rows={users} columns={columns} pageSize={pageSize}/>
                 </div>
             }
@@ -141,13 +165,58 @@ export default function Users({users}) {
                     <h2>Posts from {postsUser.username}</h2>
                     {
                         posts &&
-                        <div style={{ height: Math.min(2*pageSize,posts.length)*52+110, width: '100%', backgroundColor: 'white' }}>
+                        <div style={{ height: Math.min(2*pageSize,posts.length)*52+130, width: '100%', backgroundColor: 'white' }}>
                                 <DataGrid rows={posts} columns={postColumns} pageSize={2*pageSize}/>
                         </div>
                     }
                 </>
             }
 
+        <Dialog
+            open={dialogDeleteUserOpen}
+            onClose={() => setDialogDeleteUserOpen(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="dialog-title">Delete user {infoDialog?.username}</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    This action is permenant.
+                </DialogContentText>
+                <DialogContentText>
+                     Are you sure you want to delete this account and all his posts?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="outlined" onClick={() => setDialogDeleteUserOpen(false)} color="primary">
+                    Close
+                </Button>
+                <Button variant="contained" onClick={() => deleteUserAsync(infoDialog.id)} color="secondary">
+                    Delete
+                </Button>
+            </DialogActions>
+        </Dialog>
+        <Dialog
+            open={dialogDeletePostOpen}
+            onClose={() => setDialogDeletePostOpen(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="dialog-title">Delete Post {infoDialog?.id}</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    This action is permenant. Are you sure you want to delete this post?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="outlined" onClick={() => setDialogDeletePostOpen(false)} color="primary">
+                    Close
+                </Button>
+                <Button variant="contained" onClick={() => deletePostAsync(infoDialog.id)} color="secondary">
+                    Delete
+                </Button>
+            </DialogActions>
+        </Dialog>
         <Dialog
             open={dialogUserOpen}
             onClose={() => setDialogUserOpen(false)}

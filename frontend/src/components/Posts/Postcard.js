@@ -1,12 +1,20 @@
 import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
+import { Button } from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+
 
 
 export default function PostCard(props) {
 
     const history = useHistory()
     const [post, setPost] = useState(props.post);
+    const [dialogDeletePostOpen, setDialogDeletePostOpen] = useState(false);
 
     function DeletePost(){
         const deleteAsync = async () =>{
@@ -28,7 +36,6 @@ export default function PostCard(props) {
         }
 
         deleteAsync()
-
     }
 
     if( !post )
@@ -60,7 +67,7 @@ export default function PostCard(props) {
                 
                 
             </div>
-        </Link>
+            </Link>
             {props.deletable &&
                 <div className="card-buttons">
                     {props.editable &&
@@ -68,11 +75,32 @@ export default function PostCard(props) {
                             <i className="far fa-edit fa-2x"></i>
                         </button>
                     }
-                    <button className="icon-button" onClick={DeletePost}>
+                    <button className="icon-button" onClick={() =>setDialogDeletePostOpen(true)}>
                             <i className="far fa-trash-alt fa-2x"></i>
                     </button>
                 </div>
             }
+             <Dialog
+            open={dialogDeletePostOpen}
+            onClose={() => setDialogDeletePostOpen(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="dialog-title">Delete {props.editable || "Favorite"} Post</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        This action is permenant. Are you sure you want to delete this post?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={() => setDialogDeletePostOpen(false)} color="primary">
+                        Close
+                    </Button>
+                    <Button variant="contained" onClick={() => DeletePost()} color="secondary">
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }
